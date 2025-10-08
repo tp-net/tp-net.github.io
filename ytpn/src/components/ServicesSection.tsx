@@ -2,28 +2,34 @@
 
 const services = [
   {
-    id: 'traditional-it',
-    title: 'Traditional IT Services',
-    description: 'We offer end-to-end traditional IT services, including end user support, Microsoft 365 configuration, and proactive management of cloud infrastructure for optimised performance and security.',
+    id: 'register-membership',
+    title: 'Register Membership',
+    description: 'Join the network shaping the next generation of technical professionals — your seat at the table starts here.',
     icon: '🛠️'
   },
   {
-    id: 'applications',
-    title: 'Applications, Integrations, and Automation',
-    description: 'We provide comprehensive application, integration, and automation services, including custom application builds, seamless migrations, expert integration services, and tailored configuration. We aim to optimise usability and performance and enhance operational efficiency. Our integration experience covers a broad range of SaaS platforms.',
+    id: 'join-events',
+    title: 'Join Events',
+    description: 'Show up, speak up, and connect. Every event is a chance to grow your network and your impact.',
     icon: '⚙️'
   },
   {
-    id: 'surveillance',
-    title: 'Integrated Surveillance',
-    description: 'We deliver integrated surveillance and monitoring solutions encompassing high-quality camera deployment, network integration, and virtual counter part technology. Our seamless integration with virtual replica platforms enables real-time monitoring, analysis, and decision-making based on physical visualised data.',
+    id: 'register-committees',
+    title: 'Register Your Committee',
+    description: 'Don’t leave your committee behind — bring your team into the conversation and help drive YTPN’s next big event.',
     icon: '📹'
   },
   {
-    id: 'asset-management',
-    title: 'IT Asset Procurement and Device Management Services',
-    description: 'We offer comprehensive IT asset procurement and device management services. We streamline hardware and software sourcing and setup to ensure the right tools at the right price. From acquisition to retirement, we can provide comprehensive asset management, including device image setup, security monitoring, and optimisation across the life cycle.',
+    id: 'sponsor-ytpn',
+    title: 'Become a Sponsor',
+    description: 'Stand behind the future of industry talent — partner with YTPN to inspire, support, and connect emerging leaders.',
     icon: '💻'
+  },
+  {
+    id: 'nominate-a-speaker',
+    title: 'Nominate a Speaker',
+    description: 'Know someone with a story worth sharing? Put them forward and shape the conversations that move us.',
+    icon: '🎤'
   }
 ];
 
@@ -33,11 +39,11 @@ export default function ServicesSection() {
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <p className="text-primary font-semibold text-sm uppercase tracking-wide mb-4">
-            OUR SERVICES
+            WHAT WOULD YOU LIKE TO DO?
           </p>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Services to help your business{' '}
-            <span className="text-primary">achieve success</span>
+            How would you like to be part of {' '}
+            <span className="text-primary">YTPN?</span>
           </h2>
         </div>
         <div className="grid md:grid-cols-2 gap-8">

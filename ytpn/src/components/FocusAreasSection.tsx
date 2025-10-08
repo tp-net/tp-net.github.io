@@ -2,24 +2,26 @@
 
 const focusAreas = [
   {
-    category: 'PROCESS',
-    title: 'IoT Development',
-    description: 'We specialise in seamlessly deploying IoT devices and integrating them with cloud computing, analytics, and human expertise to digitise your industrial processes. Our IoT solutions empower asset-intensive companies to connect hundreds of devices through AWS, driving improvements in predictive quality, maintenance analytics, asset condition monitoring, and process optimisation.',
+    category: 'SOCIAL',
+    title: 'Social Events',
+    description: 'Step out from behind the desk — build real friendships, share ideas, and celebrate wins together.',
     icon: '🌐'
   },
   {
-    category: 'OPERATIONS',
-    title: 'Systems Integrations',
-    description: 'Our commitment to excellence in system integration means we meticulously assess, design, and implement solutions that harmonize your technology ecosystem. By seamlessly bridging the gaps between business units, we empower your company with real-time data accessibility, fostering better decision-making and process optimization.',
+    category: 'NETWORKING',
+    title: 'Industry Connections',
+    description: 'Don’t leave your committee behind — connect across teams, companies, and industries to move forward together.',
     icon: '🔗'
   },
   {
-    category: 'DATA SERVICE',
-    title: 'Data Management',
-    description: 'Our cloud-based data management services provide a robust and scalable solution for efficiently storing, organizing, and securing your valuable data assets. Leveraging the power of cloud technology, we offer a comprehensive suite of services that encompass data storage, backup, synchronization, and access control.',
+    category: 'DEVELOPMENT',
+    title: 'Professional Growth',
+    description: 'Back yourself. Build the skills, confidence, and perspective to lead the next generation of technical professionals.',
     icon: '📊'
   }
 ];
+
+
 
 export default function FocusAreasSection() {
   return (

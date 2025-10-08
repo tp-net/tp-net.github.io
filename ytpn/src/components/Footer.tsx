@@ -24,17 +24,17 @@ export default function Footer() {
               <span className="text-xl font-bold text-foreground">YTPN</span>
             </div>
             <p className="text-foreground-secondary mb-4">
-              YTPN is an Australian technology service provider.
+              YTPN is a Brisbane based organisation.
             </p>
             <Link 
-              href="mailto:contact@btdigital.com.au" 
+              href="mailto:adpcerqui@gmail.com" 
               className="flex items-center text-foreground-secondary hover:text-foreground transition-colors mb-4"
             >
               <Mail className="mr-2 h-4 w-4" />
-              contact@btdigital.com.au
+              adpcerqui@gmail.com
             </Link>
             <div className="flex space-x-4">
-              <Link
+              {/* <Link
                 href="https://www.facebook.com/bandtconsulting/"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -46,8 +46,8 @@ export default function Footer() {
                   color="current"
                   className="h-5 w-5"
                 />
-              </Link>
-              <Link
+              </Link> */}
+              {/* <Link
                 href="https://www.linkedin.com/company/bandt-consulting"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -59,7 +59,7 @@ export default function Footer() {
                   color="current"
                   className="h-5 w-5"
                 />
-              </Link>
+              </Link> */}
             </div>
           </div>
           <div>
