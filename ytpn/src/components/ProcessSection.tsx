@@ -11,16 +11,16 @@
 
 const processSteps = [
   {
-    title: 'Design',
-    description: 'Plan and architect your solution'
+    title: 'Organise',
+    description: 'Herd the cats, pull the levers, and drive the next big event.'
   },
   {
-    title: 'Build',
-    description: 'Develop and implement your system'
+    title: 'Events',
+    description: 'Attend events to network with other technical professionals'
   },
   {
-    title: 'Manage',
-    description: 'Maintain and optimize your technology'
+    title: 'Ticketing',
+    description: 'Manage the ticketing for your event'
   }
 ];
 

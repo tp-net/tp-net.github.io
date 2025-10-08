@@ -83,7 +83,8 @@ export default function Footer() {
         
         <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="text-foreground-muted text-sm mb-4 md:mb-0">
-            © Copyright 2022<br/>ABN: 71554355920
+            © Copyright 2025<br/>
+            {/* ABN: 71554355920 */}
           </div>
           <div className="flex items-center space-x-6">
             <SimpleThemeToggle />

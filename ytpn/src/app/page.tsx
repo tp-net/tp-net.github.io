@@ -21,7 +21,7 @@ export default function Home() {
       <BlogSection />
       <ProcessSection />
       <FocusAreasSection />
-      <ClientsSection />
+      {/* <ClientsSection /> */}
       <RegisterInterestSection />
 
     </div>

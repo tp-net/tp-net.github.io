@@ -16,7 +16,7 @@ const services = [
   {
     id: 'register-committees',
     title: 'Register Your Committee',
-    description: 'Don’t leave your committee behind — bring your team into the conversation and help drive YTPN’s next big event.',
+    description: 'Dont leave your committee behind — bring your team into the conversation and help drive YTPNs next big event.',
     icon: '📹'
   },
   {
@@ -29,6 +29,12 @@ const services = [
     id: 'nominate-a-speaker',
     title: 'Nominate a Speaker',
     description: 'Know someone with a story worth sharing? Put them forward and shape the conversations that move us.',
+    icon: '🎤'
+  }, 
+  {
+    id: 'nominate-a-topic',
+    title: 'Nominate a Topic or Paper',
+    description: 'Have something interesting to share? Put it forward for us to share with the world.',
     icon: '🎤'
   }
 ];

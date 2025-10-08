@@ -23,3 +23,17 @@ export { SimpleThemeToggle } from './ui/SimpleThemeToggle';
 export { Icon, type IconProps } from './icons/Icon';
 export { LinkedInIcon, type LinkedInIconProps } from './icons/LinkedInIcon';
 export { FacebookIcon, type FacebookIconProps } from './icons/FacebookIcon';
+
+// Event Card components
+export { 
+  EventCard, 
+  CompactEventCard, 
+  StandardEventCard, 
+  FeaturedEventCard,
+  createEventCard,
+  sampleEvents,
+  type EventData,
+  type EventCardProps,
+  type EventType,
+  type EventCardScale
+} from './EventCard';
