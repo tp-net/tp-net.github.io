@@ -1,15 +1,46 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { events } from '@/db';
+import { Calendar, Filter, Sparkles } from 'lucide-react';
+import { events } from '@/db/data/events';
+import { type Event as EventType } from '@/data/types/events';
 import { APP_CONSTS } from '@/db/app';
 import { MetadataBreadcrumb } from '@/components/ui/metadata-breadcrumb';
+import { 
+  FeaturedEventCard, 
+  StandardEventCard,
+  type EventData,
+  type EventType,
+  eventTypeConfig 
+} from '@/components/EventCard';
 
-export const metadata = {
-  title: `Events - ${APP_CONSTS.APP_NAME}`,
-  description: `Discover upcoming events, conferences, workshops, and networking opportunities for young technical professionals.`,
-};
+
+
+// Use the actual events data from the data layer
+const allEvents: EventData[] = events.map((event: EventType) => ({
+  ...event,
+  sponsors: event.sponsors || [] ,
+  organizers: event.organizers || ['YTPN']
+}));
 
 export default function EventsPage() {
+  const [selectedFilter, setSelectedFilter] = useState<EventType | 'all'>('all');
+  
+  // Get featured events (first 2 events)
+  const featuredEvents = allEvents.slice(0, 2);
+  
+  // Get upcoming events (remaining events)
+  const upcomingEvents = allEvents.slice(2);
+  
+  // Filter events based on selected filter
+  const filteredEvents = selectedFilter === 'all' 
+    ? upcomingEvents 
+    : upcomingEvents.filter(event => event.eventType === selectedFilter);
+
+  const eventTypes: (EventType | 'all')[] = ['all', 'conference', 'workshop', 'meetup', 'networking', 'seminar', 'hackathon', 'panel', 'keynote'];
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-6 py-20">
@@ -24,6 +55,9 @@ export default function EventsPage() {
         </div>
         
         <div className="text-center mb-16">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-primary/10 rounded-full mb-6 mx-auto">
+            <Calendar className="w-10 h-10 text-primary" />
+          </div>
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
             Upcoming Events
           </h1>
@@ -33,8 +67,8 @@ export default function EventsPage() {
           </p>
         </div>
 
-        <div className="max-w-6xl mx-auto">
-          {events.length === 0 ? (
+        <div className="max-w-7xl mx-auto">
+          {allEvents.length === 0 ? (
             <div className="text-center py-20">
               <h2 className="text-2xl font-bold text-foreground mb-4">
                 No Events Scheduled
@@ -44,78 +78,108 @@ export default function EventsPage() {
               </p>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {events.map((event) => (
-                <Link
-                  key={event.slug}
-                  href={`/events/${event.slug}`}
-                  className="bg-card rounded-lg shadow-lg hover:shadow-xl transition-shadow border border-border group"
-                >
-                  {event.image && (
-                    <div className="aspect-video relative overflow-hidden rounded-t-lg">
-                      <Image
-                        src={event.image}
-                        alt={event.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                      <div className="absolute top-4 left-4">
-                        <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
-                          {event.eventType}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                  
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-card-foreground mb-2 group-hover:text-primary transition-colors">
-                      {event.title}
-                    </h3>
-                    
-                    <p className="text-foreground-secondary mb-4 line-clamp-3">
-                      {event.description}
-                    </p>
-                    
-                    <div className="space-y-2 text-sm text-foreground-secondary">
-                      <div className="flex items-center gap-2">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        <span>{event.date}</span>
-                      </div>
-                      
-                      <div className="flex items-center gap-2">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span>{event.time}</span>
-                      </div>
-                      
-                      <div className="flex items-center gap-2">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        <span>{event.location}</span>
-                      </div>
-                    </div>
-                    
-                    {event.tags && event.tags.length > 0 && (
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {event.tags.map((tag, index) => (
-                          <span
-                            key={index}
-                            className="bg-background-secondary text-foreground-secondary px-2 py-1 rounded text-xs"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
+            <>
+              {/* Featured Events */}
+              {featuredEvents.length > 0 && (
+                <div className="mb-16">
+                  <div className="flex items-center mb-8">
+                    <Sparkles className="w-6 h-6 text-primary mr-3" />
+                    <h2 className="text-3xl font-bold text-foreground">Featured Events</h2>
                   </div>
-                </Link>
-              ))}
-            </div>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    {featuredEvents.map((event) => (
+                      <FeaturedEventCard 
+                        key={event.id} 
+                        event={event}
+                        className="w-full"
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Filter and All Events */}
+              <div>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
+                  <h2 className="text-3xl font-bold text-foreground mb-4 sm:mb-0">
+                    All Events
+                  </h2>
+                  
+                  {/* Event Type Filter */}
+                  <div className="flex items-center space-x-2">
+                    <Filter className="w-5 h-5 text-foreground-tertiary" />
+                    <div className="flex flex-wrap gap-2">
+                      {eventTypes.map((type) => (
+                        <button
+                          key={type}
+                          onClick={() => setSelectedFilter(type)}
+                          className={`
+                            px-4 py-2 rounded-full text-sm font-medium transition-colors
+                            ${selectedFilter === type
+                              ? 'bg-primary text-primary-foreground'
+                              : 'bg-background-tertiary text-foreground-tertiary hover:bg-background-secondary hover:text-foreground-secondary'
+                            }
+                          `}
+                        >
+                          {type === 'all' ? 'All Events' : eventTypeConfig[type].label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Events Grid */}
+                {filteredEvents.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {filteredEvents.map((event) => (
+                      <StandardEventCard 
+                        key={event.id} 
+                        event={event}
+                        className="w-full"
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <Calendar className="w-16 h-16 text-foreground-tertiary mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-foreground mb-2">
+                      No events found
+                    </h3>
+                    <p className="text-foreground-secondary">
+                      No events match your current filter. Try selecting a different event type.
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Event Statistics */}
+              <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-primary mb-2">
+                    {allEvents.length}+
+                  </div>
+                  <div className="text-foreground-secondary">
+                    Upcoming Events
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-primary mb-2">
+                    {allEvents.filter(e => e.isVirtual).length}
+                  </div>
+                  <div className="text-foreground-secondary">
+                    Virtual Events
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-primary mb-2">
+                    {allEvents.reduce((sum, event) => sum + (event.capacity || 0), 0)}+
+                  </div>
+                  <div className="text-foreground-secondary">
+                    Total Capacity
+                  </div>
+                </div>
+              </div>
+            </>
           )}
         </div>
       </div>

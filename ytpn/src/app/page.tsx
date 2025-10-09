@@ -7,20 +7,18 @@ import {
   ProcessSection,
   FocusAreasSection,
   EventsSection,
-  JoinForm,
 } from '@/components';
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       <HeroSection />
-      <ServicesSection />
-      <AboutSection />
       <EventsSection />
-      <SponsorSection />      
-      <ProcessSection />
+      <ServicesSection />
       <FocusAreasSection />
-      <JoinForm />  
+      <SponsorSection />      
+      <AboutSection />
+      <ProcessSection />
 
     </div>
   );

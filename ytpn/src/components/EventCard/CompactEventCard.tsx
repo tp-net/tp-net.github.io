@@ -13,9 +13,11 @@
 import { Calendar, MapPin, Clock } from 'lucide-react';
 import Link from 'next/link';
 import { EventCardProps, eventTypeConfig } from './index';
+import { formatEventDateTime } from '@/lib/date-utils';
 
 export function CompactEventCard({ event, className = '', onClick }: EventCardProps) {
   const typeConfig = eventTypeConfig[event.eventType];
+  const { date, time } = formatEventDateTime(event.date);
   
   // Create the card content
   const cardContent = (
@@ -47,11 +49,11 @@ export function CompactEventCard({ event, className = '', onClick }: EventCardPr
       <div className="space-y-1 mb-3">
         <div className="flex items-center text-xs text-foreground-tertiary">
           <Calendar className="w-3 h-3 mr-2 flex-shrink-0" />
-          <span>{event.date}</span>
+          <span>{date}</span>
         </div>
         <div className="flex items-center text-xs text-foreground-tertiary">
           <Clock className="w-3 h-3 mr-2 flex-shrink-0" />
-          <span>{event.time}</span>
+          <span>{time}</span>
         </div>
         <div className="flex items-center text-xs text-foreground-tertiary">
           <MapPin className="w-3 h-3 mr-2 flex-shrink-0" />

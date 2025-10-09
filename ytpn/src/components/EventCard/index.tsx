@@ -18,39 +18,13 @@ import Link from 'next/link';
 import { CompactEventCard } from './CompactEventCard';
 import { StandardEventCard } from './StandardEventCard';
 import { FeaturedEventCard } from './FeaturedEventCard';
-import { Sponsor } from '../../db'
-
-// Event type definitions
-export type EventType = 
-  | 'conference' 
-  | 'workshop' 
-  | 'meetup' 
-  | 'networking' 
-  | 'seminar' 
-  | 'hackathon' 
-  | 'panel' 
-  | 'keynote';
+import { Event, Sponsor } from '../../db'
 
 export type EventCardScale = 'compact' | 'standard' | 'featured';
 
-export interface EventData {
-  id: string;
-  title: string;
-  description: string;
-  eventType: EventType;
-  date: string;
-  time: string;
-  location: string;
-  image?: string;
-  link?: string;
+// Extend the Event interface to include content property for React components
+export interface EventData extends Event {
   content?: ReactNode;
-  sponsors?: Sponsor[];
-  tags?: string[];
-  organizers?: string[];
-  capacity?: number;
-  price?: string;
-  isVirtual?: boolean;
-  slug?: string;
 }
 
 export interface EventCardProps {
@@ -61,7 +35,12 @@ export interface EventCardProps {
 }
 
 // Event type styling configuration
-export const eventTypeConfig = {
+export const eventTypeConfig: Record<Event['eventType'], {
+  color: string;
+  textColor: string;
+  icon: string;
+  label: string;
+}> = {
   conference: {
     color: 'bg-primary',
     textColor: 'text-primary-foreground',
@@ -181,11 +160,19 @@ export function EventCard({ event, scale = 'standard', className = '', onClick }
       <div className="space-y-2 mb-4">
         <div className="flex items-center text-sm text-foreground-tertiary">
           <Calendar className="w-4 h-4 mr-2 flex-shrink-0" />
-          <span>{event.date}</span>
+          <span>{event.date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          })}</span>
         </div>
         <div className="flex items-center text-sm text-foreground-tertiary">
           <Clock className="w-4 h-4 mr-2 flex-shrink-0" />
-          <span>{event.time}</span>
+          <span>{event.date.toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true
+          })}</span>
         </div>
         <div className="flex items-center text-sm text-foreground-tertiary">
           <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
@@ -324,17 +311,17 @@ export function createEventCard(scale: EventCardScale) {
 }
 
 // Export sample event data for testing and development
-export const sampleEvents: EventData[] = [
+export const sampleEvents: Event[] = [
   {
     id: '1',
     title: 'YTPN Annual Conference 2024',
     description: 'Join us for the biggest technical professional networking event of the year. Featuring keynote speakers, workshops, and networking opportunities.',
     eventType: 'conference',
-    date: 'March 15, 2024',
-    time: '9:00 AM - 6:00 PM',
+    date: new Date('2024-03-15T09:00:00+10:00'),
     location: 'Convention Center, Sydney',
     image: '/assets/images/hero.png',
     link: '#',
+    slug: 'ytpn-annual-conference-2024',
     tags: ['networking', 'keynote', 'workshop'],
     sponsors: [
       {
@@ -362,10 +349,10 @@ export const sampleEvents: EventData[] = [
     title: 'React Workshop: Advanced Patterns',
     description: 'Deep dive into advanced React patterns and best practices for building scalable applications.',
     eventType: 'workshop',
-    date: 'February 28, 2024',
-    time: '2:00 PM - 5:00 PM',
+    date: new Date('2024-02-28T14:00:00+10:00'),
     location: 'Online',
     link: '#',
+    slug: 'react-workshop-advanced-patterns',
     tags: ['react', 'javascript', 'frontend'],
     capacity: 50,
     price: 'Free',
@@ -376,9 +363,9 @@ export const sampleEvents: EventData[] = [
     title: 'Monthly Networking Meetup',
     description: 'Casual networking event for technical professionals to connect and share experiences.',
     eventType: 'meetup',
-    date: 'February 20, 2024',
-    time: '6:00 PM - 8:00 PM',
+    date: new Date('2024-02-20T18:00:00+10:00'),
     location: 'The Hub, Melbourne',
+    slug: 'monthly-networking-meetup',
     tags: ['networking', 'casual'],
     capacity: 100,
     price: 'Free'
@@ -388,11 +375,11 @@ export const sampleEvents: EventData[] = [
     title: 'AI & Machine Learning Panel',
     description: 'Expert panel discussion on the latest trends and challenges in AI and machine learning.',
     eventType: 'panel',
-    date: 'March 5, 2024',
-    time: '7:00 PM - 9:00 PM',
+    date: new Date('2024-03-05T19:00:00+10:00'),
     location: 'Tech Hub, Brisbane',
     image: '/assets/images/team.png',
     link: '#',
+    slug: 'ai-ml-panel-discussion',
     tags: ['ai', 'ml', 'panel'],
     sponsors: [
       {

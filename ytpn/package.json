@@ -5,14 +5,15 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
-    "build:static": "next build --turbopack && node scripts/deploy-files.js",
+    "build:static": "node scripts/convert-to-webp.js && next build --turbopack && node scripts/deploy-files.js",
     "start": "next start",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf .next out ../docs",
     "preview": "npx serve ../docs",
-    "generate-favicons": "node scripts/generate-favicons.js"
+    "generate-favicons": "node scripts/generate-favicons.js",
+    "convert-images": "node scripts/convert-to-webp.js"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",

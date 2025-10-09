@@ -1,11 +1,7 @@
+'use client';
 import { SponsorSection } from "@/components";
-import { APP_CONSTS } from "@/db/app";
 import { MetadataBreadcrumb } from "@/components/ui/metadata-breadcrumb";
 
-export const metadata = {
-  title: `Our Partners - ${APP_CONSTS.APP_NAME}`,
-  description: `Meet our valued partners who support ${APP_CONSTS.APP_NAME} in our mission to connect and empower young technical professionals.`,
-};
 
 export default function SponsorsPage() {
   return (

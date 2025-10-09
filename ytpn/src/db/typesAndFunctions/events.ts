@@ -6,8 +6,7 @@ export interface Event {
   title: string;
   description: string;
   eventType: 'conference' | 'workshop' | 'meetup' | 'networking' | 'seminar' | 'hackathon' | 'panel' | 'keynote';
-  date: string;
-  time: string;
+  date: Date;
   location: string;
   image?: string;
   link?: string;

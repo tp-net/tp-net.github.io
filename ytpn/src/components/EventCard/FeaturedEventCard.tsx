@@ -14,9 +14,11 @@
 import { Calendar, MapPin, Clock, Users, ExternalLink, Tag, Building2, User } from 'lucide-react';
 import Link from 'next/link';
 import { EventCardProps, eventTypeConfig } from './index';
+import { formatEventDateTime } from '@/lib/date-utils';
 
 export function FeaturedEventCard({ event, className = '', onClick }: EventCardProps) {
   const typeConfig = eventTypeConfig[event.eventType];
+  const { date, time } = formatEventDateTime(event.date);
   
   // Create the card content
   const cardContent = (
@@ -59,11 +61,11 @@ export function FeaturedEventCard({ event, className = '', onClick }: EventCardP
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
         <div className="flex items-center text-sm text-foreground-tertiary">
           <Calendar className="w-5 h-5 mr-3 flex-shrink-0" />
-          <span className="font-medium">{event.date}</span>
+          <span className="font-medium">{date}</span>
         </div>
         <div className="flex items-center text-sm text-foreground-tertiary">
           <Clock className="w-5 h-5 mr-3 flex-shrink-0" />
-          <span className="font-medium">{event.time}</span>
+          <span className="font-medium">{time}</span>
         </div>
         <div className="flex items-center text-sm text-foreground-tertiary sm:col-span-2">
           <MapPin className="w-5 h-5 mr-3 flex-shrink-0" />

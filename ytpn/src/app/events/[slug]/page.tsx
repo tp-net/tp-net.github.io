@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { getEventBySlug, getAllEventSlugs } from '@/db';
 import { APP_CONSTS } from '@/db/app';
 import { MetadataBreadcrumb } from '@/components/ui/metadata-breadcrumb';
+import { formatEventDateTime } from '@/lib/date-utils';
 
 interface EventPageProps {
   params: {
@@ -51,6 +52,8 @@ export default function EventPage({ params }: EventPageProps) {
   if (!event) {
     notFound();
   }
+
+  const { date, time } = formatEventDateTime(event.date);
 
   return (
     <div className="min-h-screen bg-background">
@@ -105,7 +108,7 @@ export default function EventPage({ params }: EventPageProps) {
                     </div>
                     <div>
                       <p className="text-sm text-foreground-secondary">Date</p>
-                      <p className="font-semibold text-card-foreground">{event.date}</p>
+                      <p className="font-semibold text-card-foreground">{date}</p>
                     </div>
                   </div>
 
@@ -117,7 +120,7 @@ export default function EventPage({ params }: EventPageProps) {
                     </div>
                     <div>
                       <p className="text-sm text-foreground-secondary">Time</p>
-                      <p className="font-semibold text-card-foreground">{event.time}</p>
+                      <p className="font-semibold text-card-foreground">{time}</p>
                     </div>
                   </div>
 
