@@ -40,7 +40,7 @@ export const events: Event[] = [
     eventType: "workshop",
     date: new Date("2024-02-28T14:00:00+10:00"),
     location: "Online",
-    image: "/assets/images/hero.webp",
+    image: "/assets/images/logo.webp",
     link: "#",
     slug: "react-workshop-advanced-patterns",
     tags: ["react", "javascript", "frontend", "advanced"],
