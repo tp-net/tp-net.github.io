@@ -12,29 +12,15 @@
  */
 
 import { Calendar, MapPin, Clock, Users, ExternalLink, Tag, Building2 } from 'lucide-react';
+import Link from 'next/link';
 import { EventCardProps, eventTypeConfig } from './index';
 
 export function StandardEventCard({ event, className = '', onClick }: EventCardProps) {
   const typeConfig = eventTypeConfig[event.eventType];
   
-  return (
-    <div 
-      className={`
-        bg-card border border-border rounded-lg p-6 shadow-sm hover:shadow-md 
-        transition-all duration-300 cursor-pointer group overflow-hidden
-        max-w-md w-full
-        ${className}
-      `}
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onClick?.();
-        }
-      }}
-    >
+  // Create the card content
+  const cardContent = (
+    <>
       {/* Event Type Badge */}
       <div className="flex items-center justify-between mb-4">
         <div className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${typeConfig.color} ${typeConfig.textColor}`}>
@@ -120,12 +106,16 @@ export function StandardEventCard({ event, className = '', onClick }: EventCardP
           </div>
           <div className="flex flex-wrap gap-1">
             {event.sponsors.slice(0, 2).map((sponsor, index) => (
-              <span 
+              <a
                 key={index}
-                className="text-xs bg-primary/10 text-primary px-2 py-1 rounded"
+                href={sponsor.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs bg-primary/10 text-primary px-2 py-1 rounded hover:bg-primary/20 transition-colors"
+                onClick={(e) => e.stopPropagation()}
               >
-                {sponsor}
-              </span>
+                {sponsor.name}
+              </a>
             ))}
             {event.sponsors.length > 2 && (
               <span className="text-xs text-foreground-tertiary">
@@ -145,8 +135,8 @@ export function StandardEventCard({ event, className = '', onClick }: EventCardP
         </div>
       )}
 
-      {/* Action Button */}
-      {event.link && (
+      {/* Action Button - only show for external links when no slug */}
+      {event.link && !event.slug && (
         <div className="flex items-center justify-between">
           <a 
             href={event.link}
@@ -158,6 +148,49 @@ export function StandardEventCard({ event, className = '', onClick }: EventCardP
           </a>
         </div>
       )}
+    </>
+  );
+
+  // If event has a slug, wrap the entire card in a Link
+  if (event.slug) {
+    return (
+      <Link href={`/events/${event.slug}`} className="block">
+        <div 
+          className={`
+            bg-card border border-border rounded-lg p-6 shadow-sm hover:shadow-md 
+            transition-all duration-300 cursor-pointer group overflow-hidden
+            max-w-md w-full
+            ${className}
+          `}
+          role="button"
+          tabIndex={0}
+        >
+          {cardContent}
+        </div>
+      </Link>
+    );
+  }
+
+  // Fallback for events without slugs - use onClick handler
+  return (
+    <div 
+      className={`
+        bg-card border border-border rounded-lg p-6 shadow-sm hover:shadow-md 
+        transition-all duration-300 cursor-pointer group overflow-hidden
+        max-w-md w-full
+        ${className}
+      `}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick?.();
+        }
+      }}
+    >
+      {cardContent}
     </div>
   );
 }

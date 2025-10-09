@@ -14,9 +14,11 @@
 
 import { Calendar, MapPin, Clock, Users, ExternalLink, Tag } from 'lucide-react';
 import { ReactNode } from 'react';
+import Link from 'next/link';
 import { CompactEventCard } from './CompactEventCard';
 import { StandardEventCard } from './StandardEventCard';
 import { FeaturedEventCard } from './FeaturedEventCard';
+import { Sponsor } from '../../db'
 
 // Event type definitions
 export type EventType = 
@@ -42,12 +44,13 @@ export interface EventData {
   image?: string;
   link?: string;
   content?: ReactNode;
-  sponsors?: string[];
+  sponsors?: Sponsor[];
   tags?: string[];
   organizers?: string[];
   capacity?: number;
   price?: string;
   isVirtual?: boolean;
+  slug?: string;
 }
 
 export interface EventCardProps {
@@ -137,19 +140,9 @@ export function EventCard({ event, scale = 'standard', className = '', onClick }
     featured: 'text-lg'
   };
 
-  return (
-    <div 
-      className={`${baseClasses} ${scaleClasses[scale]}`}
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onClick?.();
-        }
-      }}
-    >
+  // Create the card content
+  const cardContent = (
+    <>
       {/* Event Type Badge */}
       <div className="flex items-center justify-between mb-4">
         <div className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${typeConfig.color} ${typeConfig.textColor}`}>
@@ -226,6 +219,32 @@ export function EventCard({ event, scale = 'standard', className = '', onClick }
         </div>
       )}
 
+      {/* Sponsors */}
+      {event.sponsors && event.sponsors.length > 0 && (
+        <div className="mb-4">
+          <div className="flex items-center text-xs text-foreground-tertiary mb-2">
+            <span>Sponsored by:</span>
+          </div>
+          <div className="flex flex-wrap gap-1">
+            {event.sponsors.slice(0, 2).map((sponsor, index) => (
+              <Link
+                key={index}
+                href={`/sponsors/${sponsor.slug}`}
+                className="text-xs bg-primary/10 text-primary px-2 py-1 rounded hover:bg-primary/20 transition-colors"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {sponsor.name}
+              </Link>
+            ))}
+            {event.sponsors.length > 2 && (
+              <span className="text-xs text-foreground-tertiary">
+                +{event.sponsors.length - 2} more
+              </span>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Price */}
       {event.price && (
         <div className="mb-4">
@@ -235,8 +254,8 @@ export function EventCard({ event, scale = 'standard', className = '', onClick }
         </div>
       )}
 
-      {/* Action Button */}
-      {event.link && (
+      {/* Action Button - only show for external links when no slug */}
+      {event.link && !event.slug && (
         <div className="flex items-center justify-between">
           <a 
             href={event.link}
@@ -248,6 +267,39 @@ export function EventCard({ event, scale = 'standard', className = '', onClick }
           </a>
         </div>
       )}
+    </>
+  );
+
+  // If event has a slug, wrap the entire card in a Link
+  if (event.slug) {
+    return (
+      <Link href={`/events/${event.slug}`} className="block">
+        <div 
+          className={`${baseClasses} ${scaleClasses[scale]}`}
+          role="button"
+          tabIndex={0}
+        >
+          {cardContent}
+        </div>
+      </Link>
+    );
+  }
+
+  // Fallback for events without slugs - use onClick handler
+  return (
+    <div 
+      className={`${baseClasses} ${scaleClasses[scale]}`}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick?.();
+        }
+      }}
+    >
+      {cardContent}
     </div>
   );
 }
@@ -284,7 +336,22 @@ export const sampleEvents: EventData[] = [
     image: '/assets/images/hero.png',
     link: '#',
     tags: ['networking', 'keynote', 'workshop'],
-    sponsors: ['TechCorp', 'InnovateLab'],
+    sponsors: [
+      {
+        name: 'TechCorp',
+        role: 'Platinum Sponsor',
+        link: 'https://techcorp.com',
+        headshot: '/assets/sponsors/techcorp.png',
+        slug: 'techcorp'
+      },
+      {
+        name: 'InnovateLab',
+        role: 'Gold Sponsor',
+        link: 'https://innovatelab.com',
+        headshot: '/assets/sponsors/innovatelab.png',
+        slug: 'innovatelab'
+      }
+    ],
     organizers: ['YTPN Committee'],
     capacity: 500,
     price: '$150',
@@ -327,7 +394,15 @@ export const sampleEvents: EventData[] = [
     image: '/assets/images/team.png',
     link: '#',
     tags: ['ai', 'ml', 'panel'],
-    sponsors: ['AI Solutions Inc'],
+    sponsors: [
+      {
+        name: 'AI Solutions Inc',
+        role: 'Technology Partner',
+        link: 'https://aisolutions.com',
+        headshot: '/assets/sponsors/aisolutions.png',
+        slug: 'ai-solutions-inc'
+      }
+    ],
     capacity: 200,
     price: '$25'
   }

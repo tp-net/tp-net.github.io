@@ -4,11 +4,10 @@ import {
   ServicesSection,
   AboutSection,
   SponsorSection,
-  BlogSection,
   ProcessSection,
-  RegisterInterestSection,
   FocusAreasSection,
-  ClientsSection,
+  EventsSection,
+  JoinForm,
 } from '@/components';
 
 export default function Home() {
@@ -17,12 +16,11 @@ export default function Home() {
       <HeroSection />
       <ServicesSection />
       <AboutSection />
-      <SponsorSection />
-      <BlogSection />
+      <EventsSection />
+      <SponsorSection />      
       <ProcessSection />
       <FocusAreasSection />
-      {/* <ClientsSection /> */}
-      <RegisterInterestSection />
+      <JoinForm />  
 
     </div>
   );

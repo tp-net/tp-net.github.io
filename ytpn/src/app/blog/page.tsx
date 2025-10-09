@@ -10,6 +10,7 @@
 
 import { Metadata } from 'next';
 import BlogSection from '@/components/BlogSection';
+import { MetadataBreadcrumb } from '@/components/ui/metadata-breadcrumb';
 
 export const metadata: Metadata = {
   title: 'Blog - YTPN',
@@ -20,6 +21,16 @@ export default function BlogPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <div className="max-w-4xl mx-auto px-4 py-4">
+        {/* Breadcrumb */}
+        <div className="mb-6">
+          <MetadataBreadcrumb 
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Blog' }
+            ]}
+          />
+        </div>
+        
         {/* Blog Page Header */}
         <div className="text-center py-3">
           

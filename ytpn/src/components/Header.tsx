@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Phone } from 'lucide-react';
 import { SimpleThemeToggle } from '@/components/ui/SimpleThemeToggle';
+import { APP_CONSTS } from '@/db/app';
 
 export default function Header() {
   return (
@@ -14,13 +15,13 @@ export default function Header() {
             <Link href="/" className="flex items-center gap-3 text-2xl font-bold">
               <Image
                 src="/logo.png"
-                alt="YTPN"
+                alt={APP_CONSTS.APP_NAME}
                 width={220}
                 height={60}
                 className="h-12 w-auto"
                 priority
               />
-              YTPN
+              {APP_CONSTS.APP_NAME}
             </Link>
           </div>
           <div className="flex items-center space-x-6">
@@ -30,7 +31,7 @@ export default function Header() {
                 className="text-foreground-secondary"
               />
               <Link 
-                href="tel:+61457271181" 
+                href={`tel:${APP_CONSTS.APP_CONTACT_PHONE}`} 
                 className="text-foreground-secondary hover:text-foreground transition-colors text-sm"
               >
                 +61 457 271 181
@@ -38,7 +39,7 @@ export default function Header() {
             </div>
             <SimpleThemeToggle />
             <Link 
-              href="mailto:bandtdigital.contact@gmail.com" 
+              href={`mailto:${APP_CONSTS.APP_CONTACT_EMAIL}`} 
               className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-md font-medium transition-colors text-sm"
             >
               Contact

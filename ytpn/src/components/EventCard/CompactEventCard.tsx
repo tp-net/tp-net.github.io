@@ -11,29 +11,15 @@
  */
 
 import { Calendar, MapPin, Clock } from 'lucide-react';
+import Link from 'next/link';
 import { EventCardProps, eventTypeConfig } from './index';
 
 export function CompactEventCard({ event, className = '', onClick }: EventCardProps) {
   const typeConfig = eventTypeConfig[event.eventType];
   
-  return (
-    <div 
-      className={`
-        bg-card border border-border rounded-lg p-4 shadow-sm hover:shadow-md 
-        transition-all duration-300 cursor-pointer group overflow-hidden
-        max-w-sm w-full
-        ${className}
-      `}
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onClick?.();
-        }
-      }}
-    >
+  // Create the card content
+  const cardContent = (
+    <>
       {/* Event Type Badge */}
       <div className="flex items-center justify-between mb-3">
         <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${typeConfig.color} ${typeConfig.textColor}`}>
@@ -95,6 +81,67 @@ export function CompactEventCard({ event, className = '', onClick }: EventCardPr
           )}
         </div>
       )}
+
+      {/* Single Sponsor (minimal display) */}
+      {event.sponsors && event.sponsors.length > 0 && (
+        <div className="mb-2">
+          <Link
+            href={`/sponsors/${event.sponsors[0].slug}`}
+            className="text-xs text-primary hover:text-primary-600 transition-colors"
+            onClick={(e) => e.stopPropagation()}
+          >
+            Sponsored by {event.sponsors[0].name}
+          </Link>
+          {event.sponsors.length > 1 && (
+            <span className="text-xs text-foreground-tertiary ml-1">
+              +{event.sponsors.length - 1} more
+            </span>
+          )}
+        </div>
+      )}
+    </>
+  );
+
+  // If event has a slug, wrap the entire card in a Link
+  if (event.slug) {
+    return (
+      <Link href={`/events/${event.slug}`} className="block">
+        <div 
+          className={`
+            bg-card border border-border rounded-lg p-4 shadow-sm hover:shadow-md 
+            transition-all duration-300 cursor-pointer group overflow-hidden
+            max-w-sm w-full
+            ${className}
+          `}
+          role="button"
+          tabIndex={0}
+        >
+          {cardContent}
+        </div>
+      </Link>
+    );
+  }
+
+  // Fallback for events without slugs - use onClick handler
+  return (
+    <div 
+      className={`
+        bg-card border border-border rounded-lg p-4 shadow-sm hover:shadow-md 
+        transition-all duration-300 cursor-pointer group overflow-hidden
+        max-w-sm w-full
+        ${className}
+      `}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick?.();
+        }
+      }}
+    >
+      {cardContent}
     </div>
   );
 }

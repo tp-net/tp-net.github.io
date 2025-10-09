@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Mail } from 'lucide-react';
 import { SimpleThemeToggle } from '@/components/ui/SimpleThemeToggle';
 import { LinkedInIcon, FacebookIcon } from '@/components';
+import { APP_CONSTS } from '@/db/app';
 
 export default function Footer() {
 
@@ -84,7 +85,7 @@ export default function Footer() {
         <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="text-foreground-muted text-sm mb-4 md:mb-0">
             © Copyright 2025<br/>
-            {/* ABN: 71554355920 */}
+            {APP_CONSTS?.APP_ABN && `ABN: ${APP_CONSTS.APP_ABN}`}
           </div>
           <div className="flex items-center space-x-6">
             <SimpleThemeToggle />

@@ -2,16 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-
-const sponsors = [
-  {
-    name: 'B&T Digital',
-    role: 'Technology Partner',
-    link: 'https://www.btdigital.com.au/',
-    headshot: '/assets/sponsors/btdigital.png'
-  },
-  
-];
+import { sponsors, type Sponsor } from '@/db';
 
 export default function SponsorSection() {
   return (
@@ -24,9 +15,7 @@ export default function SponsorSection() {
           {sponsors.map((sponsor) => (
             <Link
               key={sponsor.name}
-              href={sponsor.link}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={`/sponsors/${sponsor.slug}`}
               className="bg-card rounded-lg p-8 shadow-lg hover:shadow-xl transition-shadow text-center group border border-border max-w-100 w-full mx-auto"
             >
               <div className="w-32 h-32 bg-background-secondary rounded-full mx-auto mb-6 flex items-center justify-center border border-border overflow-hidden">

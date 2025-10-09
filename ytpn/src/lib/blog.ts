@@ -1,4 +1,6 @@
 import React from 'react';
+import { readdirSync, existsSync } from 'fs';
+import { join } from 'path';
 
 export interface BlogPost {
   slug: string;
@@ -15,21 +17,72 @@ export interface BlogPost {
   Content: React.ComponentType;
 }
 
-// Static registry of blog posts for static export compatibility
-const BLOG_POSTS_REGISTRY = [
-  'navigating-digital-transformation',
-  'navigate-lock-in-complexities-with-gribeauvals-innovation-mindset',
-  'open-source-software-for-smes',
-  'role-of-apps-integrations-and-automation'
-] as const;
+/**
+ * Dynamically scan the blog folder for available posts
+ * Returns an array of blog post slugs found in the blog directory
+ */
+function scanBlogPosts(): string[] {
+  try {
+    // Get the blog directory path
+    const blogDir = join(process.cwd(), 'src', 'app', 'blog');
+    
+    if (!existsSync(blogDir)) {
+      console.warn('Blog directory not found:', blogDir);
+      return [];
+    }
+
+    // Read all directories in the blog folder
+    const entries = readdirSync(blogDir, { withFileTypes: true });
+    const postSlugs: string[] = [];
+
+    for (const entry of entries) {
+      // Only process directories (potential blog posts)
+      if (entry.isDirectory()) {
+        const postDir = join(blogDir, entry.name);
+        
+        // Check if this directory contains a page.mdx file (required for a blog post)
+        const mdxFile = join(postDir, 'page.mdx');
+        if (existsSync(mdxFile)) {
+          postSlugs.push(entry.name);
+        }
+      }
+    }
+
+    return postSlugs;
+  } catch (error) {
+    console.error('Error scanning blog posts:', error);
+    return [];
+  }
+}
 
 export function getAllPosts(): BlogPost[] {
-  const allPostsData = BLOG_POSTS_REGISTRY
+  // Get all available blog post slugs by scanning the directory
+  const availableSlugs = scanBlogPosts();
+  
+  const allPostsData = availableSlugs
     .map((slug) => {
       try {
-        // Import metadata from individual metadata file
-        // eslint-disable-next-line @typescript-eslint/no-require-imports
-        const { blogPostMetadata } = require(`@/app/blog/${slug}/metadata.ts`);
+        // Try to import metadata from individual metadata file
+        let blogPostMetadata;
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-require-imports
+          const metadataModule = require(`@/app/blog/${slug}/metadata.ts`);
+          blogPostMetadata = metadataModule.blogPostMetadata;
+        } catch (metadataError) {
+          // If no metadata file exists, create default metadata
+          console.warn(`No metadata file found for ${slug}, using defaults`);
+          blogPostMetadata = {
+            slug,
+            title: slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+            excerpt: 'No excerpt available',
+            date: new Date().toISOString().split('T')[0],
+            author: 'YTPN Team',
+            tags: [],
+            published: true,
+            featured: false,
+            readingTime: 5
+          };
+        }
         
         // Only process published posts
         if (!blogPostMetadata.published) {
@@ -56,15 +109,34 @@ export function getAllPosts(): BlogPost[] {
 }
 
 export function getPostBySlug(slug: string): BlogPost | null {
-  // Check if the slug exists in our registry
-  if (!BLOG_POSTS_REGISTRY.includes(slug as typeof BLOG_POSTS_REGISTRY[number])) {
+  // Check if the slug exists by scanning the directory
+  const availableSlugs = scanBlogPosts();
+  if (!availableSlugs.includes(slug)) {
     return null;
   }
 
   try {
-    // Import metadata from individual metadata file
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { blogPostMetadata } = require(`@/app/blog/${slug}/metadata.ts`);
+    // Try to import metadata from individual metadata file
+    let blogPostMetadata;
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const metadataModule = require(`@/app/blog/${slug}/metadata.ts`);
+      blogPostMetadata = metadataModule.blogPostMetadata;
+    } catch (metadataError) {
+      // If no metadata file exists, create default metadata
+      console.warn(`No metadata file found for ${slug}, using defaults`);
+      blogPostMetadata = {
+        slug,
+        title: slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+        excerpt: 'No excerpt available',
+        date: new Date().toISOString().split('T')[0],
+        author: 'YTPN Team',
+        tags: [],
+        published: true,
+        featured: false,
+        readingTime: 5
+      };
+    }
     
     if (!blogPostMetadata || !blogPostMetadata.published) {
       return null;
