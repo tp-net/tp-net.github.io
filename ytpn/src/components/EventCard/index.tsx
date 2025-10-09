@@ -88,6 +88,12 @@ export const eventTypeConfig: Record<Event['eventType'], {
     textColor: 'text-primary-foreground',
     icon: '⭐',
     label: 'Keynote'
+  },
+  social: {
+    color: 'bg-background-tertiary',
+    textColor: 'text-foreground-tertiary',
+    icon: '🎉',
+    label: 'Social'
   }
 };
 

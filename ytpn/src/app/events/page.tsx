@@ -5,14 +5,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Calendar, Filter, Sparkles } from 'lucide-react';
 import { events } from '@/db/data/events';
-import { type Event as EventType } from '@/data/types/events';
-import { APP_CONSTS } from '@/db/app';
+import {eventTypes, Event as EventType} from '@/db/typesAndFunctions/events';
 import { MetadataBreadcrumb } from '@/components/ui/metadata-breadcrumb';
 import { 
   FeaturedEventCard, 
   StandardEventCard,
   type EventData,
-  type EventType,
+
   eventTypeConfig 
 } from '@/components/EventCard';
 
@@ -26,7 +25,7 @@ const allEvents: EventData[] = events.map((event: EventType) => ({
 }));
 
 export default function EventsPage() {
-  const [selectedFilter, setSelectedFilter] = useState<EventType | 'all'>('all');
+  const [selectedFilter, setSelectedFilter] = useState<EventType['eventType'] | 'all'>('all');
   
   // Get featured events (first 2 events)
   const featuredEvents = allEvents.slice(0, 2);
@@ -34,12 +33,12 @@ export default function EventsPage() {
   // Get upcoming events (remaining events)
   const upcomingEvents = allEvents.slice(2);
   
-  // Filter events based on selected filter
+  // Filter events based on selected filter (filter all events, not just upcoming)
   const filteredEvents = selectedFilter === 'all' 
-    ? upcomingEvents 
-    : upcomingEvents.filter(event => event.eventType === selectedFilter);
+    ? allEvents 
+    : allEvents.filter(event => event.eventType === selectedFilter);
 
-  const eventTypes: (EventType | 'all')[] = ['all', 'conference', 'workshop', 'meetup', 'networking', 'seminar', 'hackathon', 'panel', 'keynote'];
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -100,28 +99,55 @@ export default function EventsPage() {
 
               {/* Filter and All Events */}
               <div>
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
-                  <h2 className="text-3xl font-bold text-foreground mb-4 sm:mb-0">
-                    All Events
-                  </h2>
+                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 gap-6">
+                  <div>
+                    <h2 className="text-3xl font-bold text-foreground">
+                      All Events
+                    </h2>
+                    <p className="text-sm text-foreground-secondary mt-1">
+                      {selectedFilter === 'all' 
+                        ? `Showing ${filteredEvents.length} of ${allEvents.length} events`
+                        : `Showing ${filteredEvents.length} ${eventTypeConfig[selectedFilter]?.label.toLowerCase()} event${filteredEvents.length !== 1 ? 's' : ''}`
+                      }
+                    </p>
+                  </div>
                   
                   {/* Event Type Filter */}
-                  <div className="flex items-center space-x-2">
-                    <Filter className="w-5 h-5 text-foreground-tertiary" />
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                    <div className="flex items-center space-x-2">
+                      <Filter className="w-5 h-5 text-foreground-tertiary" />
+                      <span className="text-sm font-medium text-foreground-secondary">Filter by type:</span>
+                    </div>
                     <div className="flex flex-wrap gap-2">
-                      {eventTypes.map((type) => (
+                      {/* All Events Button */}
+                      <button
+                        onClick={() => setSelectedFilter('all')}
+                        className={`
+                          px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+                          border border-transparent
+                          ${selectedFilter === 'all'
+                            ? 'bg-primary text-primary-foreground border-primary shadow-sm'
+                            : 'bg-background-tertiary text-foreground-tertiary hover:bg-background-secondary hover:text-foreground-secondary border-border hover:border-border-strong'
+                          }
+                        `}
+                      >
+                        All Events
+                      </button>
+                      {/* Event Type Buttons */}
+                      {eventTypes.filter(type => type !== 'all').map((type) => (
                         <button
                           key={type}
                           onClick={() => setSelectedFilter(type)}
                           className={`
-                            px-4 py-2 rounded-full text-sm font-medium transition-colors
+                            px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+                            border border-transparent
                             ${selectedFilter === type
-                              ? 'bg-primary text-primary-foreground'
-                              : 'bg-background-tertiary text-foreground-tertiary hover:bg-background-secondary hover:text-foreground-secondary'
+                              ? 'bg-primary text-primary-foreground border-primary shadow-sm'
+                              : 'bg-background-tertiary text-foreground-tertiary hover:bg-background-secondary hover:text-foreground-secondary border-border hover:border-border-strong'
                             }
                           `}
                         >
-                          {type === 'all' ? 'All Events' : eventTypeConfig[type].label}
+                          {eventTypeConfig[type].label}
                         </button>
                       ))}
                     </div>

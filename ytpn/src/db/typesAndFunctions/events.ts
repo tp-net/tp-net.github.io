@@ -1,11 +1,12 @@
 import {  type Sponsor } from "./sponsors";
 import { events } from "../data/events";
 
+
 export interface Event {
   id?: string;
   title: string;
   description: string;
-  eventType: 'conference' | 'workshop' | 'meetup' | 'networking' | 'seminar' | 'hackathon' | 'panel' | 'keynote';
+  eventType: 'conference' | 'workshop' | 'meetup' | 'networking' | 'seminar' | 'hackathon' | 'panel' | 'keynote' | 'social';
   date: Date;
   location: string;
   image?: string;
@@ -18,6 +19,8 @@ export interface Event {
   isVirtual?: boolean;
   slug: string;
 }
+
+export const eventTypes: (Event['eventType'] | 'all')[] = ['all', 'conference', 'workshop', 'meetup', 'networking', 'seminar', 'hackathon', 'panel', 'keynote', 'social'];
 
 export function getEventBySlug(slug: string): Event | undefined {
   return events.find(event => event.slug === slug);
