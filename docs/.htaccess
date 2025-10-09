@@ -1,0 +1,27 @@
+# Ensure HTML files are served with correct MIME type
+AddType text/html .html
+
+# Redirect .txt requests to .html for MDX pages
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)\.txt$ $1.html [L,R=301]
+
+# Handle trailing slashes for directories
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*[^/])$ $1/ [L,R=301]
+
+# Serve index.html for directory requests
+DirectoryIndex index.html
+
+# Cache static assets
+<FilesMatch "\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$">
+    ExpiresActive On
+    ExpiresDefault "access plus 1 year"
+</FilesMatch>
+
+# Security headers
+Header always set X-Content-Type-Options nosniff
+Header always set X-Frame-Options DENY
+Header always set X-XSS-Protection "1; mode=block"
