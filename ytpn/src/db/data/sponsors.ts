@@ -1,3 +1,4 @@
+
 import { type Sponsor } from "../typesAndFunctions/sponsors";
 
 export const sponsors: Sponsor[] = [
