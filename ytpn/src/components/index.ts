@@ -11,6 +11,7 @@ export { default as ProcessSection } from './ProcessSection';
 export { default as FocusAreasSection } from './FocusAreasSection';
 export { default as ClientsSection } from './ClientsSection';
 export { default as EventsSection } from './EventsSection';
+export { default as TypewriterAnimation } from './TypewriterAnimation';
 
 // Theme components
 export { ThemeProvider, useTheme } from './providers/ThemeProvider';

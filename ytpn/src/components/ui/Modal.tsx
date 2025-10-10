@@ -49,23 +49,23 @@ export default function Modal({
       />
       
       {/* Modal Content */}
-      <div className={`relative bg-card border border-border rounded-2xl shadow-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto ${className}`}>
+      <div className={`relative bg-card border border-border rounded-lg shadow-2xl max-w-5xl w-full mx-4 max-h-[90vh] overflow-y-auto ${className}`}>
         {/* Header */}
         {title && (
-          <div className="flex items-center justify-between p-6 border-b border-border">
-            <h2 className="text-2xl font-bold text-foreground">{title}</h2>
+          <div className="flex items-center justify-between p-4 sm:p-6 border-b border-border">
+            <h2 className="text-lg sm:text-xl font-bold text-foreground pr-4">{title}</h2>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-muted rounded-lg transition-colors"
+              className="p-2 hover:bg-muted rounded-lg transition-colors flex-shrink-0"
               aria-label="Close modal"
             >
-              <X className="w-5 h-5 text-foreground-secondary" />
+              <X className="w-4 h-4 sm:w-5 sm:h-5 text-foreground-secondary" />
             </button>
           </div>
         )}
         
         {/* Content */}
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
           {children}
         </div>
       </div>

@@ -376,3 +376,38 @@
     }
   }
 }
+
+@layer utilities {
+  /* Animated gradient border animations */
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  @keyframes gradient-shift-reverse {
+    0% {
+      background-position: 100% 50%;
+    }
+    50% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .animate-gradient-shift {
+    animation: gradient-shift 3s ease-in-out infinite;
+  }
+
+  .animate-gradient-shift-reverse {
+    animation: gradient-shift-reverse 3s ease-in-out infinite;
+  }
+}

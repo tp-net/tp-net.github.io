@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { TypewriterAnimation } from '@/components';
 export default function HeroSection() {
   return (
     <section className="min-h-screen bg-background flex items-center">
@@ -14,6 +15,16 @@ export default function HeroSection() {
             <p className="text-xl text-foreground-secondary leading-relaxed">
               We are a network of thinkers and builders who are passionate about technical problems and want to solve them together.
             </p>
+            <div className="text-2xl md:text-3xl font-medium text-foreground">
+              <TypewriterAnimation 
+                className="block"
+                typingSpeed={80}
+                deletingSpeed={40}
+                pauseDuration={1500}
+                prefix="Connecting "
+                suffix=" across Australia"
+              />
+            </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link 
                 href="/events" 
