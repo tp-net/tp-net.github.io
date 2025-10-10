@@ -61,7 +61,7 @@ export default async function EventPage({ params }: EventPageProps) {
   // Generate the event URL for sharing
   const eventUrl = typeof window !== 'undefined' 
     ? window.location.href 
-    : `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/events/${(await params).slug}`;
+    : `${APP_CONSTS.APP_URL}/events/${(await params).slug}`;
 
   return (
     <div className="min-h-screen bg-background">

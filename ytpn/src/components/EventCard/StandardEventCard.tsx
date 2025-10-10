@@ -18,6 +18,7 @@ import { formatEventDateTime } from '@/lib/date-utils';
 import { SingleEventICalButton } from '@/components/ICalDownloadButton';
 import { ShareButton } from '@/components/ShareButton';
 import { getEventSlug } from '@/db';
+import { APP_CONSTS } from '@/db/app';
 
 export function StandardEventCard({ event, className = '', onClick }: EventCardProps) {
   const typeConfig = eventTypeConfig[event.eventType];
@@ -25,7 +26,7 @@ export function StandardEventCard({ event, className = '', onClick }: EventCardP
   
   // Generate the event URL for sharing
   const eventUrl = event.slug 
-    ? `${typeof window !== 'undefined' ? window.location.origin : ''}/events/${getEventSlug(event)}`
+    ? `${APP_CONSTS.APP_URL}/events/${getEventSlug(event)}`
     : event.link || (typeof window !== 'undefined' ? window.location.href : '');
   
   // Create the card content
