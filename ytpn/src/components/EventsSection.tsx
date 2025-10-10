@@ -4,6 +4,7 @@ import { Calendar, ArrowRight } from 'lucide-react';
 import { events } from '@/db/data/events'; 
 import { formatEventDateTime } from '@/lib/date-utils';
 import type { Event as EventType} from '@/db/typesAndFunctions/events';
+import { getEventSlug } from '@/db/typesAndFunctions/eventUtils';
 
 export default function EventsSection() {
   // Show only the first 3 events for homepage preview
@@ -34,7 +35,7 @@ export default function EventsSection() {
               return (
               <Link
                 key={event.slug}
-                href={`/events/${event.slug}`}
+                href={`/events/${getEventSlug(event)}`}
                 className="bg-card rounded-lg shadow-lg hover:shadow-xl transition-shadow border border-border group"
               >
                 {event.image && (
