@@ -59,9 +59,7 @@ export default async function EventPage({ params }: EventPageProps) {
   const { date, time } = formatEventDateTime(event.date);
   
   // Generate the event URL for sharing
-  const eventUrl = typeof window !== 'undefined' 
-    ? window.location.href 
-    : `${APP_CONSTS.APP_URL}/events/${(await params).slug}`;
+  const eventUrl = `${APP_CONSTS.APP_URL}/events/${(await params).slug}`;
 
   return (
     <div className="min-h-screen bg-background">
