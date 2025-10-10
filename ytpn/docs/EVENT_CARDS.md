@@ -14,6 +14,7 @@ The Event Cards system provides a flexible, scalable solution for displaying eve
 - **CompactEventCard**: Optimized for lists and dense layouts
 - **StandardEventCard**: Balanced layout for main content areas
 - **FeaturedEventCard**: Premium layout for hero sections and highlights
+- **ShareButton**: Reusable share button with dropdown menu for all sharing options
 
 ### Event Types
 
@@ -324,6 +325,14 @@ Visit `/event-cards-demo` to see all event card scales in action with:
 - Validate color contrast ratios
 - Ensure proper ARIA labels
 
+**Nested button interactions not working**
+- The event cards wrap clickable content in a Link element for navigation
+- Interactive elements (buttons, anchors) inside cards use event delegation to prevent parent navigation
+- The parent Link checks `e.target.closest('button, a[href]')` to detect nested interactive elements
+- If clicks originated from buttons or anchors, the Link prevents its default navigation
+- All buttons inside cards should have proper `e.preventDefault()` and `e.stopPropagation()` as defensive measures
+- Dropdown menus use portal rendering to avoid z-index and positioning issues
+
 ## Future Enhancements
 
 ### Planned Features
@@ -332,8 +341,15 @@ Visit `/event-cards-demo` to see all event card scales in action with:
 - Custom event type configuration
 - Advanced filtering and sorting
 - Integration with calendar systems
-- Social sharing capabilities
 - Analytics tracking integration
+
+### Implemented Features
+
+- **Social sharing capabilities**: All event card variants now include a share button with dropdown menu for copying links, email sharing, and social media sharing (Twitter, LinkedIn, Facebook)
+- **Event page sharing**: Individual event pages include share functionality in the call-to-action section
+- **Nested button interaction handling**: Share and calendar buttons properly handle click propagation to prevent triggering parent Link navigation. The parent Link checks if clicks originated from interactive elements (buttons, anchors) and prevents default navigation when appropriate.
+- **Enhanced z-index layering**: Share button dropdown uses proper z-index (`z-[100]`) and portal rendering for correct layering above other elements
+- **Dropdown menu click isolation**: DropdownMenu and DropdownMenuItem components include `preventDefault()` and `stopPropagation()` to ensure proper event isolation
 
 ### Extension Points
 

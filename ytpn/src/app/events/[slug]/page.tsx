@@ -6,6 +6,7 @@ import { APP_CONSTS } from '@/db/app';
 import { MetadataBreadcrumb } from '@/components/ui/metadata-breadcrumb';
 import { formatEventDateTime } from '@/lib/date-utils';
 import { SingleEventICalButton } from '@/components/ICalDownloadButton';
+import { ShareButton } from '@/components/ShareButton';
 
 interface EventPageProps {
   params: {
@@ -21,7 +22,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: EventPageProps) {
-  const event = getEventBySlug(params.slug);
+  
+  const event = getEventBySlug((await params).slug);
   
   if (!event) {
     return {
@@ -47,14 +49,19 @@ export async function generateMetadata({ params }: EventPageProps) {
   };
 }
 
-export default function EventPage({ params }: EventPageProps) {
-  const event = getEventBySlug(params.slug);
+export default async function EventPage({ params }: EventPageProps) {
+  const event = getEventBySlug(  (await params).slug);
 
   if (!event) {
     notFound();
   }
 
   const { date, time } = formatEventDateTime(event.date);
+  
+  // Generate the event URL for sharing
+  const eventUrl = typeof window !== 'undefined' 
+    ? window.location.href 
+    : `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/events/${(await params).slug}`;
 
   return (
     <div className="min-h-screen bg-background">
@@ -98,7 +105,17 @@ export default function EventPage({ params }: EventPageProps) {
                 {event.description}
               </p>
 
-              {/* Event Details */}
+              {/* Event Details Content */}
+              {event.details && (
+                <div className="mb-8">
+                  <h2 className="text-2xl font-semibold text-card-foreground mb-4">Event Details</h2>
+                  <div className="prose prose-lg max-w-none text-foreground-secondary leading-relaxed">
+                    <p className="whitespace-pre-line">{event.details}</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Event Information */}
               <div className="grid md:grid-cols-2 gap-6 mb-8">
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
@@ -259,14 +276,24 @@ export default function EventPage({ params }: EventPageProps) {
                   </Link>
                 )}
                 
-                <SingleEventICalButton 
-                  event={event}
-                  className="bg-background-secondary text-foreground border border-border hover:bg-background-tertiary"
-                />
+                <div className="flex items-center gap-3">
+                  <SingleEventICalButton 
+                    event={event}
+                    className="bg-background-secondary text-foreground border border-border hover:bg-background-tertiary"
+                  />
+                  
+                  <ShareButton
+                    eventTitle={event.title}
+                    eventUrl={eventUrl}
+                    eventDate={date}
+                    eventLocation={event.location}
+                    size="md"
+                  />
+                </div>
                 
                 <Link
                   href="/events"
-                  className="inline-flex items-center justify-center px-6 py-3 border border-border text-foreground rounded-lg hover:bg-background-secondary transition-colors font-medium"
+                  className="inline-flex items-center justify-center px-6 py-2 border border-border text-foreground rounded-lg hover:bg-background-secondary transition-colors font-medium"
                 >
                   View All Events
                 </Link>

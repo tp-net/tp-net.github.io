@@ -16,11 +16,17 @@ import Link from 'next/link';
 import { EventCardProps, eventTypeConfig } from './index';
 import { formatEventDateTime } from '@/lib/date-utils';
 import { SingleEventICalButton } from '@/components/ICalDownloadButton';
+import { ShareButton } from '@/components/ShareButton';
 import { getEventSlug } from '@/db';
 
 export function StandardEventCard({ event, className = '', onClick }: EventCardProps) {
   const typeConfig = eventTypeConfig[event.eventType];
   const { date, time } = formatEventDateTime(event.date);
+  
+  // Generate the event URL for sharing
+  const eventUrl = event.slug 
+    ? `${typeof window !== 'undefined' ? window.location.origin : ''}/events/${getEventSlug(event)}`
+    : event.link || (typeof window !== 'undefined' ? window.location.href : '');
   
   // Create the card content
   const cardContent = (
@@ -141,11 +147,22 @@ export function StandardEventCard({ event, className = '', onClick }: EventCardP
 
       {/* Action Buttons */}
       <div className="flex items-center justify-between gap-3">
-        {/* iCal Download Button */}
-        <SingleEventICalButton 
-          event={event}
-          className="bg-background-secondary text-foreground border border-border hover:bg-background-tertiary text-xs px-3 py-2"
-        />
+        <div className="flex items-center gap-2">
+          {/* iCal Download Button */}
+          <SingleEventICalButton 
+            event={event}
+            className="bg-background-secondary text-foreground border border-border hover:bg-background-tertiary text-xs px-3 py-2"
+          />
+          
+          {/* Share Button */}
+          <ShareButton
+            eventTitle={event.title}
+            eventUrl={eventUrl}
+            eventDate={date}
+            eventLocation={event.location}
+            size="sm"
+          />
+        </div>
         
         {/* External Link Button - only show for external links when no slug */}
         {event.link && !event.slug && (
@@ -165,7 +182,18 @@ export function StandardEventCard({ event, className = '', onClick }: EventCardP
   // If event has a slug, wrap the entire card in a Link
   if (event.slug) {
     return (
-      <Link href={`/events/${getEventSlug(event)}`} className="block">
+      <Link 
+        href={`/events/${getEventSlug(event)}`} 
+        className="block"
+        onClick={(e) => {
+          // Check if the click originated from an interactive element that should prevent navigation
+          const target = e.target as HTMLElement;
+          const isInteractiveElement = target.closest('[data-prevent-navigation]');
+          if (isInteractiveElement) {
+            e.preventDefault();
+          }
+        }}
+      >
         <div 
           className={`
             bg-card border border-border rounded-lg p-6 shadow-sm hover:shadow-md 

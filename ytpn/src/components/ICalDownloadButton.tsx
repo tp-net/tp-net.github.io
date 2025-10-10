@@ -28,7 +28,9 @@ export function ICalDownloadButton({
   className = '',
   children 
 }: ICalDownloadButtonProps) {
-  const handleDownload = () => {
+  const handleDownload = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     try {
       if (variant === 'single' && event) {
         downloadEventICalFile(event);
@@ -65,6 +67,7 @@ export function ICalDownloadButton({
   return (
     <button
       onClick={handleDownload}
+      data-prevent-navigation
       className={`
         inline-flex items-center gap-2 px-4 py-2 
         bg-primary text-primary-foreground 
