@@ -11,7 +11,7 @@ export const events: Event[] = [
     description: "Informal networking event",
     details: "Join us at a local pub for an informal networking event. With friends and colleagues. All are welcome.",
     eventType: EVENT_TYPES.NETWORKING,
-    date: new Date("2025-11-14T09:00:00+10:00"),
+    date: new Date("2025-11-14T17:15:00+10:00"),
     location: "tbc",
     image: "/assets/images/networking1.webp",
     sponsors: [],
