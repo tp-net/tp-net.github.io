@@ -3,6 +3,7 @@ export * from './app';
 
 // Re-export everything from typesAndFunctions
 export * from './typesAndFunctions/events';
+export * from './typesAndFunctions/eventUtils';
 export * from './typesAndFunctions/forms';
 export * from './typesAndFunctions/sponsors';
 

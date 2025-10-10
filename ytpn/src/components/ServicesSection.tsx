@@ -103,7 +103,7 @@ export default function ServicesSection() {
           {services.map((service) => (
             <div 
               key={service.id} 
-              className="relative group cursor-pointer"
+              className="relative group cursor-pointer "
               onClick={() => handleCardClick(service)}
               role={service.form || service.link ? "button" : undefined}
               tabIndex={service.form || service.link ? 0 : undefined}
@@ -115,20 +115,20 @@ export default function ServicesSection() {
               }}
             >
               {/* Animated border background */}
-              <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-primary via-secondary to-primary bg-[length:200%_200%] animate-gradient-shift opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 rounded-lg  bg-gradient-to-r from-primary via-secondary to-primary bg-[length:200%_200%] animate-gradient-shift opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               
               {/* Animated border inner ring */}
-              <div className="absolute inset-[1px] rounded-lg bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 bg-[length:200%_200%] animate-gradient-shift-reverse opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-[1px] rounded-lg  bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 bg-[length:200%_200%] animate-gradient-shift-reverse opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               
               {/* Main card content */}
               <div 
                 className={`
                   relative bg-card rounded-lg p-8 shadow-lg border border-border
-                  transition-all duration-300
+                  transition-all duration-300 
                   hover:shadow-xl hover:scale-[1.02] hover:border-primary/30
                   active:scale-[0.98] active:shadow-lg
                   ${service.form || service.link ? 'hover:bg-card/95' : ''}
-                  overflow-hidden
+                  overflow-hidden h-full 
                 `}
               >
                 {/* Subtle gradient overlay on hover */}

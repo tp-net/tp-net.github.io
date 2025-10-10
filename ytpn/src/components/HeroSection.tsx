@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { TypewriterAnimation } from '@/components';
+import { APP_CONSTS } from '@/db/app';
 export default function HeroSection() {
   return (
     <section className="min-h-screen bg-background flex items-center">
@@ -10,7 +11,7 @@ export default function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
             <h1 className="text-4xl md:text-6xl font-bold text-foreground leading-tight">
-              Young Technical Professionals Network
+              {APP_CONSTS.APP_NAME}
             </h1>
             <p className="text-xl text-foreground-secondary leading-relaxed">
               We are a network of thinkers and builders who are passionate about technical problems and want to solve them together.
@@ -39,10 +40,10 @@ export default function HeroSection() {
                 Reps
               </Link>
               <Link 
-                href="/sponsors" 
+                href="/join" 
                 className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-lg font-semibold transition-colors text-center"
               >
-                Sponsors
+                Join {APP_CONSTS.APP_SHORTNAME}
               </Link>
             </div>
           </div>

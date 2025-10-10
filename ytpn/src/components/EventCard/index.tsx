@@ -18,7 +18,8 @@ import Link from 'next/link';
 import { CompactEventCard } from './CompactEventCard';
 import { StandardEventCard } from './StandardEventCard';
 import { FeaturedEventCard } from './FeaturedEventCard';
-import { Event, Sponsor } from '../../db'
+import { Event, getEventSlug, Sponsor } from '../../db';
+import { formatEventDateTime } from '@/lib/date-utils';
 
 export type EventCardScale = 'compact' | 'standard' | 'featured';
 
@@ -100,6 +101,7 @@ export const eventTypeConfig: Record<Event['eventType'], {
 // Base EventCard component
 export function EventCard({ event, scale = 'standard', className = '', onClick }: EventCardProps) {
   const typeConfig = eventTypeConfig[event.eventType];
+  const { date, time } = formatEventDateTime(event.date);
   
   const baseClasses = `
     bg-card border border-border rounded-lg shadow-sm hover:shadow-md 
@@ -166,19 +168,11 @@ export function EventCard({ event, scale = 'standard', className = '', onClick }
       <div className="space-y-2 mb-4">
         <div className="flex items-center text-sm text-foreground-tertiary">
           <Calendar className="w-4 h-4 mr-2 flex-shrink-0" />
-          <span>{event.date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          })}</span>
+          <span>{date}</span>
         </div>
         <div className="flex items-center text-sm text-foreground-tertiary">
           <Clock className="w-4 h-4 mr-2 flex-shrink-0" />
-          <span>{event.date.toLocaleTimeString('en-US', {
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true
-          })}</span>
+          <span>{time}</span>
         </div>
         <div className="flex items-center text-sm text-foreground-tertiary">
           <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
@@ -266,7 +260,7 @@ export function EventCard({ event, scale = 'standard', className = '', onClick }
   // If event has a slug, wrap the entire card in a Link
   if (event.slug) {
     return (
-      <Link href={`/events/${event.slug}`} className="block">
+      <Link href={`/events/${getEventSlug(event)}`} className="block">
         <div 
           className={`${baseClasses} ${scaleClasses[scale]}`}
           role="button"

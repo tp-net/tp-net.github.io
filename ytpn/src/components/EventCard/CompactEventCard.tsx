@@ -14,6 +14,7 @@ import { Calendar, MapPin, Clock } from 'lucide-react';
 import Link from 'next/link';
 import { EventCardProps, eventTypeConfig } from './index';
 import { formatEventDateTime } from '@/lib/date-utils';
+import { getEventSlug } from '@/db/typesAndFunctions/eventUtils';
 
 export function CompactEventCard({ event, className = '', onClick }: EventCardProps) {
   const typeConfig = eventTypeConfig[event.eventType];
@@ -107,7 +108,7 @@ export function CompactEventCard({ event, className = '', onClick }: EventCardPr
   // If event has a slug, wrap the entire card in a Link
   if (event.slug) {
     return (
-      <Link href={`/events/${event.slug}`} className="block">
+      <Link href={`/events/${getEventSlug(event)}`} className="block">
         <div 
           className={`
             bg-card border border-border rounded-lg p-4 shadow-sm hover:shadow-md 

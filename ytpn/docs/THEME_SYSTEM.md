@@ -1,21 +1,21 @@
-# Intelligent Theme System
+# Forest Theme System
 
-This project includes a comprehensive dark and light mode theme system built with Tailwind CSS 4 and React. The system provides intelligent color management, smooth transitions, and excellent accessibility features.
+This project includes a comprehensive dark and light mode forest-themed system built with Tailwind CSS 4 and React. The system provides intelligent color management with natural forest colors, smooth transitions, and excellent accessibility features.
 
 ## Features
 
-### 🎨 Intelligent Color Palette
+### 🌲 Forest Color Palette
 
 - **HSL-based colors** for better color manipulation
 - **Semantic color naming** for intuitive usage
 - **Automatic dark mode adaptation** with proper contrast ratios
-- **10-shade primary color system** (50-900)
-- **Semantic colors** for success, warning, error, and info states
+- **10-shade primary color system** (50-900) in forest greens
+- **Natural semantic colors** inspired by forest elements (earth browns, autumn golds, stream blues)
 
-### 🌓 Theme Modes
+### 🌲 Forest Theme Modes
 
-- **Light Mode**: Clean, bright interface optimized for daytime use
-- **Dark Mode**: Eye-friendly dark interface for low-light environments
+- **Light Mode**: Warm, natural interface with cream backgrounds and forest green accents
+- **Dark Mode**: Deep forest atmosphere with dark greens and mint highlights
 - **System Mode**: Automatically follows user's system preference
 - **Smooth transitions** between themes (300ms ease)
 
@@ -96,28 +96,28 @@ function ThemeSelector() {
 
 ## Color System
 
-### Light Mode Colors
+### Light Mode Colors - Forest Theme
 
-- **Background**: Pure white (#ffffff)
-- **Foreground**: Near black (#171717)
-- **Primary**: Blue (#3b82f6)
-- **Secondary**: Light gray (#f8fafc)
-- **Accent**: Purple (#8b5cf6)
+- **Background**: Warm cream (#fefdf8)
+- **Foreground**: Deep forest green (#1a2e1a)
+- **Primary**: Rich forest green (#2d5a2d)
+- **Secondary**: Light sage green (#f0f4f0)
+- **Accent**: Earth brown (#8b4513)
 
-### Dark Mode Colors
+### Dark Mode Colors - Forest Theme
 
-- **Background**: Near black (#0a0a0a)
-- **Foreground**: Near white (#ededed)
-- **Primary**: Light blue (#60a5fa)
-- **Secondary**: Dark gray (#1e293b)
-- **Accent**: Light purple (#a78bfa)
+- **Background**: Very dark forest green (#0d1b0d)
+- **Foreground**: Light mint green (#e8f5e8)
+- **Primary**: Medium forest green (#4a7c59)
+- **Secondary**: Dark forest green (#1a2e1a)
+- **Accent**: Warm brown (#cd853f)
 
-### Semantic Colors
+### Semantic Colors - Forest Theme
 
-- **Success**: Green (#16a34a)
-- **Warning**: Orange (#ea580c)
-- **Destructive**: Red (#dc2626)
-- **Info**: Blue (#0ea5e9)
+- **Success**: Forest green (#228b22)
+- **Warning**: Goldenrod - autumn leaves (#daa520)
+- **Destructive**: Saddle brown - forest fire (#8b4513)
+- **Info**: Steel blue - forest streams (#4682b4)
 
 ## Components
 
@@ -151,16 +151,18 @@ The theme system uses CSS custom properties for all colors:
 
 ```css
 :root {
-  --background: 0 0% 100%;
-  --foreground: 240 10% 3.9%;
-  --primary: 221 83% 53%;
+  /* Light mode - Forest Theme */
+  --background: 60 20% 99%; /* Warm cream */
+  --foreground: 120 30% 15%; /* Deep forest green */
+  --primary: 120 35% 25%; /* Rich forest green */
   /* ... more colors */
 }
 
 .dark {
-  --background: 240 10% 3.9%;
-  --foreground: 0 0% 98%;
-  --primary: 217 91% 60%;
+  /* Dark mode - Forest Theme */
+  --background: 120 40% 8%; /* Very dark forest green */
+  --foreground: 120 30% 90%; /* Light mint green */
+  --primary: 120 25% 45%; /* Medium forest green */
   /* ... more colors */
 }
 ```
@@ -214,16 +216,17 @@ Visit `/theme-demo` to see the theme system in action with:
 - **Minimal bundle size** impact
 - **Efficient re-renders** with React context optimization
 
-## Keeping Palette and CSS Aligned
+## Keeping Forest Palette and CSS Aligned
 
 > **IMPORTANT:**
-> The color palette used in JS/TS (`src/styles/palette.ts`) and the CSS custom properties in `globals.css` must always be kept in sync. Any time you update a color in one, update the other to match. This ensures a single source of truth for both CSS and JS/TS color usage, and prevents visual inconsistencies.
+> The forest color palette used in JS/TS (`src/styles/palette.ts`) and the CSS custom properties in `globals.css` must always be kept in sync. Any time you update a color in one, update the other to match. This ensures a single source of truth for both CSS and JS/TS color usage, and prevents visual inconsistencies.
 >
 > - Use `palette.ts` for all color values in JS/TS (e.g., for embedded component theming, JS-driven styles, etc.)
 > - Use CSS variables in `globals.css` for all Tailwind and CSS-based styling.
 >
-> **When adding or changing a color:**
+> **When adding or changing a forest color:**
 >
 > 1. Update the value in both `globals.css` and `palette.ts`.
 > 2. Double-check the mapping for both light and dark mode.
 > 3. Test in both modes to ensure consistency.
+> 4. Maintain the forest theme aesthetic with natural, earthy tones.

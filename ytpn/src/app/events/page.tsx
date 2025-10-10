@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Calendar, Filter, Sparkles } from 'lucide-react';
+import { Calendar, Filter, Sparkles, Download } from 'lucide-react';
 import { events } from '@/db/data/events';
-import {eventTypes, Event as EventType} from '@/db/typesAndFunctions/events';
+import { EVENT_TYPES, Event as EventType } from '@/db/typesAndFunctions/events';
 import { MetadataBreadcrumb } from '@/components/ui/metadata-breadcrumb';
 import { 
   FeaturedEventCard, 
@@ -14,6 +14,7 @@ import {
 
   eventTypeConfig 
 } from '@/components/EventCard';
+import { MultipleEventsICalButton } from '@/components/ICalDownloadButton';
 
 
 
@@ -112,6 +113,19 @@ export default function EventsPage() {
                     </p>
                   </div>
                   
+                  {/* Download All Events Button */}
+                  {allEvents.length > 0 && (
+                    <div className="flex items-center gap-4">
+                      <MultipleEventsICalButton 
+                        events={allEvents}
+                        className="bg-background-secondary text-foreground border border-border hover:bg-background-tertiary"
+                      >
+                        <Download className="w-4 h-4" />
+                        Download All Events
+                      </MultipleEventsICalButton>
+                    </div>
+                  )}
+                  
                   {/* Event Type Filter */}
                   <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                     <div className="flex items-center space-x-2">
@@ -134,7 +148,7 @@ export default function EventsPage() {
                         All Events
                       </button>
                       {/* Event Type Buttons */}
-                      {eventTypes.filter(type => type !== 'all').map((type) => (
+                      {Object.values(EVENT_TYPES).filter(type => type !== 'all').map((type) => (
                         <button
                           key={type}
                           onClick={() => setSelectedFilter(type)}

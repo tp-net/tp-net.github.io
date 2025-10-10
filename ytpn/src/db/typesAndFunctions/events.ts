@@ -1,13 +1,26 @@
 import {  type Sponsor } from "./sponsors";
-import { events } from "../data/events";
 
+export const EVENT_TYPES = {
+  ALL: "all",
+  CONFERENCE: "conference",
+  WORKSHOP: "workshop",
+  MEETUP: "meetup",
+  NETWORKING: "networking",
+  SEMINAR: "seminar",
+  HACKATHON: "hackathon",
+  PANEL: "panel",
+  KEYNOTE: "keynote",
+  SOCIAL: "social"
+} as const;
 
 export interface Event {
   id?: string;
   title: string;
-  description: string;
-  eventType: 'conference' | 'workshop' | 'meetup' | 'networking' | 'seminar' | 'hackathon' | 'panel' | 'keynote' | 'social';
-  date: Date;
+  
+  description?: string;
+  details?: string;
+  eventType: (typeof EVENT_TYPES)[keyof typeof EVENT_TYPES];
+  date?: Date;
   location: string;
   image?: string;
   link?: string;
@@ -20,22 +33,6 @@ export interface Event {
   slug: string;
 }
 
-export const eventTypes: (Event['eventType'] | 'all')[] = ['all', 'conference', 'workshop', 'meetup', 'networking', 'seminar', 'hackathon', 'panel', 'keynote', 'social'];
 
-export function getEventBySlug(slug: string): Event | undefined {
-  return events.find(event => event.slug === slug);
-}
 
-export function getAllEventSlugs(): string[] {
-  return events.map(event => event.slug);
-}
-
-// Export events data as JSON for static generation
-export { events as eventsData };
-
-// Function to load events from JSON (useful for static generation)
-export async function loadEventsFromJSON(): Promise<Event[]> {
-  // In a real implementation, you might load from a JSON file
-  // For now, we'll return the static data
-  return events;
-}
+// Event utility functions moved to separate file to avoid circular dependencies

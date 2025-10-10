@@ -15,6 +15,8 @@ import { Calendar, MapPin, Clock, Users, ExternalLink, Tag, Building2, User } fr
 import Link from 'next/link';
 import { EventCardProps, eventTypeConfig } from './index';
 import { formatEventDateTime } from '@/lib/date-utils';
+import { SingleEventICalButton } from '@/components/ICalDownloadButton';
+import { getEventSlug } from '@/db/typesAndFunctions/eventUtils';
 
 export function FeaturedEventCard({ event, className = '', onClick }: EventCardProps) {
   const typeConfig = eventTypeConfig[event.eventType];
@@ -164,9 +166,16 @@ export function FeaturedEventCard({ event, className = '', onClick }: EventCardP
         </div>
       )}
 
-      {/* Action Button - only show for external links when no slug */}
-      {event.link && !event.slug && (
-        <div className="flex items-center justify-between">
+      {/* Action Buttons */}
+      <div className="flex items-center justify-between gap-4">
+        {/* iCal Download Button */}
+        <SingleEventICalButton 
+          event={event}
+          className="bg-background-secondary text-foreground border border-border hover:bg-background-tertiary"
+        />
+        
+        {/* External Link Button - only show for external links when no slug */}
+        {event.link && !event.slug && (
           <a 
             href={event.link}
             className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary-600 transition-colors shadow-md hover:shadow-lg"
@@ -175,15 +184,15 @@ export function FeaturedEventCard({ event, className = '', onClick }: EventCardP
             Learn More
             <ExternalLink className="w-5 h-5 ml-2" />
           </a>
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 
   // If event has a slug, wrap the entire card in a Link
   if (event.slug) {
     return (
-      <Link href={`/events/${event.slug}`} className="block">
+      <Link href={`/events/${getEventSlug(event)}`} className="block">
         <div 
           className={`
             bg-card border border-border rounded-xl p-8 shadow-lg hover:shadow-xl 

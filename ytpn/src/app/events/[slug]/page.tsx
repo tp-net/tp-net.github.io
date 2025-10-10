@@ -5,6 +5,7 @@ import { getEventBySlug, getAllEventSlugs } from '@/db';
 import { APP_CONSTS } from '@/db/app';
 import { MetadataBreadcrumb } from '@/components/ui/metadata-breadcrumb';
 import { formatEventDateTime } from '@/lib/date-utils';
+import { SingleEventICalButton } from '@/components/ICalDownloadButton';
 
 interface EventPageProps {
   params: {
@@ -257,6 +258,11 @@ export default function EventPage({ params }: EventPageProps) {
                     </svg>
                   </Link>
                 )}
+                
+                <SingleEventICalButton 
+                  event={event}
+                  className="bg-background-secondary text-foreground border border-border hover:bg-background-tertiary"
+                />
                 
                 <Link
                   href="/events"

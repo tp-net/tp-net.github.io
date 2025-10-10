@@ -5,130 +5,130 @@
 
 @layer base {
   :root {
-    /* Light mode colors */
-    --background: 0 0% 100%;
-    --background-secondary: 0 0% 98%;
-    --background-tertiary: 0 0% 96%;
-    --background-muted: 0 0% 94%;
+    /* Light mode colors - Forest Theme (High Contrast) */
+    --background: 60 15% 98%; /* Slightly darker cream for better contrast */
+    --background-secondary: 120 12% 95%; /* Darker sage */
+    --background-tertiary: 120 8% 92%; /* Darker very light sage */
+    --background-muted: 120 6% 90%; /* Darker muted sage */
 
-    --foreground: 240 10% 3.9%;
-    --foreground-secondary: 240 5% 26%;
-    --foreground-tertiary: 240 4% 46%;
-    --foreground-muted: 240 3% 64%;
+    --foreground: 120 40% 8%; /* Much darker forest green for high contrast */
+    --foreground-secondary: 120 30% 18%; /* Darker medium forest green */
+    --foreground-tertiary: 120 25% 32%; /* Darker muted forest green */
+    --foreground-muted: 120 20% 45%; /* Darker light forest green */
 
-    /* Primary colors - Blue */
-    --primary: 221 83% 53%;
-    --primary-foreground: 0 0% 98%;
-    --primary-50: 213 100% 96%;
-    --primary-100: 214 95% 93%;
-    --primary-200: 213 97% 87%;
-    --primary-300: 212 96% 78%;
-    --primary-400: 213 94% 68%;
-    --primary-500: 221 83% 53%;
-    --primary-600: 217 91% 60%;
-    --primary-700: 215 25% 27%;
-    --primary-800: 217 33% 17%;
-    --primary-900: 222 84% 5%;
+    /* Primary colors - Forest Green (High Contrast) */
+    --primary: 120 45% 18%; /* Much darker rich forest green */
+    --primary-foreground: 60 15% 98%; /* Slightly darker cream white */
+    --primary-50: 120 25% 92%; /* Darker very light forest */
+    --primary-100: 120 20% 85%; /* Darker light forest */
+    --primary-200: 120 18% 75%; /* Darker medium-light forest */
+    --primary-300: 120 15% 65%; /* Darker medium forest */
+    --primary-400: 120 18% 45%; /* Darker forest green */
+    --primary-500: 120 45% 18%; /* Much darker rich forest green */
+    --primary-600: 120 50% 15%; /* Much darker forest green */
+    --primary-700: 120 55% 12%; /* Much darker very dark forest */
+    --primary-800: 120 60% 8%; /* Much darker deep forest */
+    --primary-900: 120 65% 4%; /* Much darker darkest forest */
 
-    /* Secondary colors - Gray */
-    --secondary: 240 5% 96%;
-    --secondary-foreground: 240 6% 10%;
+    /* Secondary colors - Sage Green (High Contrast) */
+    --secondary: 120 12% 92%; /* Darker light sage green */
+    --secondary-foreground: 120 40% 8%; /* Much darker deep forest green */
 
-    /* Accent colors - Purple */
-    --accent: 262 83% 58%;
-    --accent-foreground: 0 0% 98%;
+    /* Accent colors - Earth Brown (High Contrast) */
+    --accent: 30 60% 30%; /* Darker earth brown */
+    --accent-foreground: 60 15% 98%; /* Slightly darker cream white */
 
-    /* Semantic colors */
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
+    /* Semantic colors - Forest Theme (High Contrast) */
+    --destructive: 30 70% 25%; /* Much darker saddle brown (forest fire) */
+    --destructive-foreground: 60 15% 98%; /* Slightly darker cream white */
 
-    --success: 142 76% 36%;
-    --success-foreground: 0 0% 98%;
+    --success: 120 70% 25%; /* Much darker forest green */
+    --success-foreground: 60 15% 98%; /* Slightly darker cream white */
 
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 98%;
+    --warning: 45 90% 35%; /* Darker goldenrod (autumn leaves) */
+    --warning-foreground: 120 40% 8%; /* Much darker deep forest green */
 
-    --info: 199 89% 48%;
-    --info-foreground: 0 0% 98%;
+    --info: 200 60% 35%; /* Darker steel blue (forest streams) */
+    --info-foreground: 60 15% 98%; /* Slightly darker cream white */
 
-    /* UI elements */
-    --border: 240 6% 90%;
-    --input: 240 6% 90%;
-    --ring: 221 83% 53%;
+    /* UI elements - Forest Theme (High Contrast) */
+    --border: 120 12% 80%; /* Darker light sage border */
+    --input: 120 12% 80%; /* Darker light sage input */
+    --ring: 120 45% 18%; /* Much darker forest green ring */
 
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card: 60 15% 98%; /* Slightly darker warm cream card */
+    --card-foreground: 120 40% 8%; /* Much darker deep forest green */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    --popover: 60 15% 98%; /* Slightly darker warm cream popover */
+    --popover-foreground: 120 40% 8%; /* Much darker deep forest green */
 
-    --muted: 240 5% 96%;
-    --muted-foreground: 240 4% 46%;
+    --muted: 120 8% 88%; /* Darker muted sage */
+    --muted-foreground: 120 20% 35%; /* Darker muted forest green */
 
     /* Border radius */
     --radius: 0.5rem;
   }
 
   .dark {
-    /* Dark mode colors */
-    --background: 240 10% 3.9%;
-    --background-secondary: 240 6% 6%;
-    --background-tertiary: 240 5% 9%;
-    --background-muted: 240 4% 12%;
+    /* Dark mode colors - Forest Theme (High Contrast) */
+    --background: 120 45% 5%; /* Much darker very dark forest green */
+    --background-secondary: 120 35% 8%; /* Much darker dark forest green */
+    --background-tertiary: 120 30% 12%; /* Much darker medium dark forest */
+    --background-muted: 120 25% 16%; /* Much darker muted dark forest */
 
-    --foreground: 0 0% 98%;
-    --foreground-secondary: 240 5% 84%;
-    --foreground-tertiary: 240 4% 74%;
-    --foreground-muted: 240 3% 64%;
+    --foreground: 120 35% 95%; /* Much lighter mint green */
+    --foreground-secondary: 120 30% 85%; /* Much lighter medium mint green */
+    --foreground-tertiary: 120 25% 75%; /* Much lighter muted mint green */
+    --foreground-muted: 120 20% 65%; /* Much lighter light mint green */
 
-    /* Primary colors - Blue (adjusted for dark mode) */
-    --primary: 217 91% 60%;
-    --primary-foreground: 222 84% 5%;
-    --primary-50: 222 84% 5%;
-    --primary-100: 217 33% 17%;
-    --primary-200: 215 25% 27%;
-    --primary-300: 217 91% 60%;
-    --primary-400: 213 94% 68%;
-    --primary-500: 221 83% 53%;
-    --primary-600: 217 91% 60%;
-    --primary-700: 213 94% 68%;
-    --primary-800: 212 96% 78%;
-    --primary-900: 214 95% 93%;
+    /* Primary colors - Forest Green (High Contrast Dark Mode) */
+    --primary: 120 30% 55%; /* Much lighter medium forest green */
+    --primary-foreground: 120 45% 5%; /* Much darker very dark forest green */
+    --primary-50: 120 45% 5%; /* Much darker very dark forest */
+    --primary-100: 120 40% 8%; /* Much darker dark forest */
+    --primary-200: 120 35% 12%; /* Much darker medium dark forest */
+    --primary-300: 120 30% 25%; /* Much darker medium forest */
+    --primary-400: 120 30% 40%; /* Much darker medium forest green */
+    --primary-500: 120 30% 55%; /* Much lighter forest green */
+    --primary-600: 120 35% 65%; /* Much lighter light forest green */
+    --primary-700: 120 40% 75%; /* Much lighter lighter forest green */
+    --primary-800: 120 45% 85%; /* Much lighter light forest green */
+    --primary-900: 120 50% 95%; /* Much lighter very light forest green */
 
-    /* Secondary colors - Gray (adjusted for dark mode) */
-    --secondary: 240 4% 16%;
-    --secondary-foreground: 0 0% 98%;
+    /* Secondary colors - Dark Forest (High Contrast Dark Mode) */
+    --secondary: 120 35% 10%; /* Much darker dark forest green */
+    --secondary-foreground: 120 35% 95%; /* Much lighter light mint green */
 
-    /* Accent colors - Purple (adjusted for dark mode) */
-    --accent: 263 70% 71%;
-    --accent-foreground: 0 0% 98%;
+    /* Accent colors - Warm Brown (High Contrast Dark Mode) */
+    --accent: 30 45% 70%; /* Much lighter warm brown */
+    --accent-foreground: 120 45% 5%; /* Much darker very dark forest green */
 
-    /* Semantic colors (adjusted for dark mode) */
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 0 0% 98%;
+    /* Semantic colors - Forest Theme (High Contrast Dark Mode) */
+    --destructive: 30 55% 65%; /* Much lighter Peru (warmer brown) */
+    --destructive-foreground: 120 35% 95%; /* Much lighter light mint green */
 
-    --success: 142 71% 45%;
-    --success-foreground: 0 0% 98%;
+    --success: 120 70% 60%; /* Much lighter lime green */
+    --success-foreground: 120 45% 5%; /* Much darker very dark forest green */
 
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 98%;
+    --warning: 45 100% 70%; /* Much lighter gold (bright autumn) */
+    --warning-foreground: 120 45% 5%; /* Much darker very dark forest green */
 
-    --info: 199 89% 48%;
-    --info-foreground: 0 0% 98%;
+    --info: 200 70% 80%; /* Much lighter sky blue (forest sky) */
+    --info-foreground: 120 45% 5%; /* Much darker very dark forest green */
 
-    /* UI elements (adjusted for dark mode) */
-    --border: 240 4% 16%;
-    --input: 240 4% 16%;
-    --ring: 217 91% 60%;
+    /* UI elements - Forest Theme (High Contrast Dark Mode) */
+    --border: 120 25% 16%; /* Much darker dark forest border */
+    --input: 120 25% 16%; /* Much darker dark forest input */
+    --ring: 120 30% 55%; /* Much lighter medium forest green ring */
 
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
+    --card: 120 45% 5%; /* Much darker very dark forest green card */
+    --card-foreground: 120 35% 95%; /* Much lighter light mint green */
 
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 120 45% 5%; /* Much darker very dark forest green popover */
+    --popover-foreground: 120 35% 95%; /* Much lighter light mint green */
 
-    --muted: 240 4% 16%;
-    --muted-foreground: 240 4% 74%;
+    --muted: 120 25% 16%; /* Much darker muted dark forest */
+    --muted-foreground: 120 25% 75%; /* Much lighter muted mint green */
   }
 }
 
@@ -198,27 +198,27 @@
   html {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
-    /* Fallback for when CSS variables aren't loaded yet */
-    background-color: #ffffff;
-    color: #0f172a;
+    /* Fallback for when CSS variables aren't loaded yet - Forest Theme (High Contrast) */
+    background-color: #f5f3f0;
+    color: #0d1b0d;
   }
 
   html.dark {
-    background-color: #0f172a;
-    color: #f8fafc;
+    background-color: #051405;
+    color: #f0f8f0;
   }
 
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
-    /* Fallback for when CSS variables aren't loaded yet */
-    background-color: #ffffff;
-    color: #0f172a;
+    /* Fallback for when CSS variables aren't loaded yet - Forest Theme (High Contrast) */
+    background-color: #f5f3f0;
+    color: #0d1b0d;
   }
 
   .dark body {
-    background-color: #0f172a;
-    color: #f8fafc;
+    background-color: #051405;
+    color: #f0f8f0;
   }
 
   * {
