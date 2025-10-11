@@ -24,6 +24,7 @@ export interface Event {
   location: string;
   image?: string;
   link?: string;
+  hiEventsId?: string;
   tags?: string[];
   sponsors?: Sponsor[];
   organizers?: string[];

@@ -1,0 +1,1 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,59776,t=>{"use strict";t.s(["default",()=>e]);var s=t.i(43476);function e(){return(0,s.jsx)("script",{async:!0,src:"https://hi-events-all-in-one-816636667737.australia-southeast1.run.app/widget.js"})}}]);
