@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "pnpm build:static",
+    "build:turbopack": "next build --turbopack",
     "build:static": "node scripts/convert-to-webp.js && next build --turbopack && node scripts/deploy-files.js",
     "start": "next start",
     "lint": "eslint",
