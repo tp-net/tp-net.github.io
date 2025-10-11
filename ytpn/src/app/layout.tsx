@@ -5,6 +5,7 @@ import { ClientThemeProvider } from "@/components/providers/ClientThemeProvider"
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import TicketScript from "@/components/HiEvents/TicketScript";
 
 
 const raleway = Raleway({
@@ -63,7 +64,7 @@ export default function RootLayout({
             `,
           }}
         />
-      <script async src="https://hi-events-all-in-one-816636667737.australia-southeast1.run.app/widget.js"></script>
+        <TicketScript />  
       </head>
       <body
         className={`${raleway.variable} antialiased`}

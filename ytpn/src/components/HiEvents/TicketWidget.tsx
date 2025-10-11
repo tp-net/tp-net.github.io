@@ -17,7 +17,6 @@ import { palette } from '@/styles/palette';
 const getThemeColors = (resolvedTheme: 'light' | 'dark') => {
   const colors = palette[resolvedTheme];
   
-  if (resolvedTheme === 'dark') {
     return {
       primaryColor: colors.primary, // Medium forest green
       primaryTextColor: colors.background, // Very dark forest green
@@ -25,15 +24,7 @@ const getThemeColors = (resolvedTheme: 'light' | 'dark') => {
       secondaryTextColor: colors.foreground, // Light mint green
       backgroundColor: `${colors.background}bf`, // Very dark forest green with transparency
     };
-  } else {
-    return {
-      primaryColor: colors.primary, // Rich forest green
-      primaryTextColor: colors.background, // Warm cream
-      secondaryColor: colors.secondary, // Light sage green
-      secondaryTextColor: colors.foreground, // Deep forest green
-      backgroundColor: `${colors.background}bf`, // Warm cream with transparency
-    };
-  }
+
 };
 
 export default function TicketWidget({ eventId }: { eventId: string }) {
