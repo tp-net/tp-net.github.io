@@ -14,9 +14,9 @@ export type AppConfig = {
 }
 
 export const APP_CONSTS: AppConfig = {
-    APP_SHORTNAME: "YTPN",
-    APP_NAME: "Young Technical Professionals Network",
-    APP_DESCRIPTION: "Young Technical Professionals Network",
+    APP_SHORTNAME: "TPN",
+    APP_NAME: "Technical Professionals Network",
+    APP_DESCRIPTION: "Tech Professionals Network",
     APP_URL: "https://ytp-net.github.io",
     // APP_ABN: "",
     // APP_TWITTER: "https://twitter.com/ytpn",
@@ -24,7 +24,7 @@ export const APP_CONSTS: AppConfig = {
     // APP_LINKEDIN: "https://www.linkedin.com/company/ytpn",
     // APP_INSTAGRAM: "https://www.instagram.com/ytpn",
     // APP_YOUTUBE: "https://www.youtube.com/ytpn",
-    APP_CONTACT_EMAIL: "adpcerqui@gmail.com",
+    APP_CONTACT_EMAIL: "technicalprofessionalsnetwork@gmail.com",
     APP_CONTACT_PHONE: "+61 457 271 181",   
 }
 

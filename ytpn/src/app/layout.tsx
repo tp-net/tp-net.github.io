@@ -63,6 +63,7 @@ export default function RootLayout({
             `,
           }}
         />
+      <script async src="https://hi-events-all-in-one-816636667737.australia-southeast1.run.app/widget.js"></script>
       </head>
       <body
         className={`${raleway.variable} antialiased`}

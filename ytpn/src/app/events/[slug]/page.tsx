@@ -7,6 +7,7 @@ import { MetadataBreadcrumb } from '@/components/ui/metadata-breadcrumb';
 import { formatEventDateTime } from '@/lib/date-utils';
 import { SingleEventICalButton } from '@/components/ICalDownloadButton';
 import { ShareButton } from '@/components/ShareButton';
+import TicketWidget from '@/components/HiEvents/TicketWidget';
 
 interface EventPageProps {
   params: {
@@ -63,6 +64,7 @@ export default async function EventPage({ params }: EventPageProps) {
 
   return (
     <div className="min-h-screen bg-background">
+
       <div className="container mx-auto px-6 py-20">
         {/* Breadcrumb */}
         <div className="mb-8">
@@ -213,6 +215,13 @@ export default async function EventPage({ params }: EventPageProps) {
                       </span>
                     ))}
                   </div>
+                </div>
+              )}
+
+              {event.hiEventsId && (
+                <div className="mb-8">
+                  <h3 className="text-lg font-semibold text-card-foreground mb-3">Tickets</h3>
+                  <TicketWidget eventId={event.hiEventsId} />
                 </div>
               )}
 
