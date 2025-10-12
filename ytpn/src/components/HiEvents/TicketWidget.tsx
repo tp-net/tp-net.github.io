@@ -1,8 +1,13 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { Loader2, RefreshCw, ExternalLink } from 'lucide-react';
+import { Loader2, RefreshCw, ExternalLink, Leaf } from 'lucide-react';
 import { HI_EVENTS_HOST, HI_EVENTS_ORGANISER_PAGE } from './HighEventsConfig';
-import TicketScript from './TicketScript';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 /**
  * FUNCTIONAL REQUIREMENTS:
@@ -10,6 +15,7 @@ import TicketScript from './TicketScript';
  * - Show spinner button with "Register Now" text for first 5 seconds
  * - Display tooltip explaining cold start behavior during loading
  * - After 5 seconds, show two buttons: refresh page and backup link
+ * - Display environmental message with green leaf icon explaining emissions savings
  * - Handle widget loading states gracefully with proper fallbacks
  * - Use forest theme system for consistent styling
  * - Ensure responsive design and accessibility
@@ -34,12 +40,14 @@ interface ColdStartWidgetWrapperProps {
   widget: React.ReactNode;
   eventId?: string;
   eventSlug?: string;
+  waitTime?: number;
 }
 
 function ColdStartWidgetWrapper({
   widget,
   eventId,
   eventSlug,
+  waitTime = 10000,
 }: ColdStartWidgetWrapperProps) {
   /**
   The ticketing service has a cold start. So this should be shown if the events widget fails to load. (the div will be empty)
@@ -96,7 +104,7 @@ function ColdStartWidgetWrapper({
         setShowFallbackButtons(true);
         setIsLoading(false);
       }
-    }, 10000);
+    }, waitTime);
 
     return () => {
       clearInterval(checkInterval);
@@ -134,7 +142,7 @@ function ColdStartWidgetWrapper({
                 <button
                   className='inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium text-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
                   disabled
-                  title='Our ticketing service is still warming up. Try again in a few seconds.'
+                  title='Ticketing service is still warming up.'
                 >
                   <Loader2 className='w-4 h-4 animate-spin' />
                 </button>
@@ -142,10 +150,24 @@ function ColdStartWidgetWrapper({
             ) : (
               // Fallback buttons after timeout
               <div className='space-y-3'>
-                <p className='text-sm text-foreground-secondary mb-4'>
-                  The ticketing service may be warming up. Try again in a few
-                  seconds, and if the issue persists, please contact us.
-                </p>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <p className='text-sm text-foreground-secondary mb-4 flex items-center gap-2 cursor-help'>
+                        The ticketing service may be warming up. Try again in a
+                        few seconds, and if the issue persists, please contact
+                        us.
+                        <Leaf className='w-8 h-8 text-green-600 ' />
+                      </p>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>
+                        By shutting down the ticketing service when not in use,
+                        we can save emissions
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
                 <div className='flex flex-col sm:flex-row gap-3 justify-center'>
                   <button
                     onClick={handleRefreshPage}
@@ -159,20 +181,17 @@ function ColdStartWidgetWrapper({
                     className='inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium text-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-200'
                   >
                     <ExternalLink className='w-4 h-4' />
-                    Register on External Site
+                    Go to Ticketing Site
                   </button>
                 </div>
-                <p className='text-xs text-foreground-tertiary break-all'>
-                  Or visit:{' '}
-                  <a
-                    href={backupUrl}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='text-primary hover:underline break-all'
-                  >
-                    {backupUrl}
-                  </a>
-                </p>
+                <a
+                  href={backupUrl}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='text-xs text-primary hover:underline break-all '
+                >
+                  {backupUrl}
+                </a>
               </div>
             )}
           </div>
@@ -241,12 +260,14 @@ export default function TicketWidget({
 }: TicketWidgetProps) {
   return (
     <>
-      <BaseTicketWidget eventId={eventId} />
-      {/* <ColdStartWidgetWrapper
+      {/* <BaseTicketWidget eventId={eventId} /> */}
+      <ColdStartWidgetWrapper
         widget={<BaseTicketWidget eventId={eventId} />}
+        // widget={<div>Hello</div>}
         eventId={eventId}
         eventSlug={eventSlug}
-      /> */}
+        waitTime={10000}
+      />
     </>
   );
 }

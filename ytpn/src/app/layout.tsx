@@ -5,7 +5,6 @@ import { ClientThemeProvider } from '@/components/providers/ClientThemeProvider'
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import TicketScript from '@/components/HiEvents/TicketScript';
 import { APP_CONSTS } from '@/db/app';
 
 const raleway = Raleway({
@@ -64,7 +63,6 @@ export default function RootLayout({
             `,
           }}
         />
-        <TicketScript />
       </head>
       <body className={`${raleway.variable} antialiased`}>
         <ClientThemeProvider defaultTheme='system'>
