@@ -24,23 +24,17 @@ interface MetadataBreadcrumbProps {
 
 // Default breadcrumb mappings for common routes
 const defaultBreadcrumbs: Record<string, BreadcrumbItem[]> = {
-  '/sponsors': [
-    { label: 'Home', href: '/' },
-    { label: 'Sponsors' }
-  ],
-  '/events': [
-    { label: 'Home', href: '/' },
-    { label: 'Events' }
-  ],
-  '/blog': [
-    { label: 'Home', href: '/' },
-    { label: 'Blog' }
-  ],
+  '/sponsors': [{ label: 'Home', href: '/' }, { label: 'Sponsors' }],
+  '/events': [{ label: 'Home', href: '/' }, { label: 'Events' }],
+  '/blog': [{ label: 'Home', href: '/' }, { label: 'Blog' }],
 };
 
-export function MetadataBreadcrumb({ items, className }: MetadataBreadcrumbProps) {
+export function MetadataBreadcrumb({
+  items,
+  className,
+}: MetadataBreadcrumbProps) {
   const pathname = usePathname();
-  
+
   // Use provided items or generate from pathname
   const breadcrumbItems = items || generateBreadcrumbsFromPath(pathname);
 
@@ -53,9 +47,9 @@ export function MetadataBreadcrumb({ items, className }: MetadataBreadcrumbProps
       <BreadcrumbList>
         {breadcrumbItems.map((item, index) => {
           const isLast = index === breadcrumbItems.length - 1;
-          
+
           return (
-            <div key={index} className="flex items-center">
+            <div key={index} className='flex items-center'>
               <BreadcrumbItem>
                 {isLast ? (
                   <BreadcrumbPage>{item.label}</BreadcrumbPage>
@@ -82,21 +76,19 @@ function generateBreadcrumbsFromPath(pathname: string): BreadcrumbItem[] {
 
   // Handle dynamic routes
   const pathSegments = pathname.split('/').filter(Boolean);
-  const breadcrumbs: BreadcrumbItem[] = [
-    { label: 'Home', href: '/' }
-  ];
+  const breadcrumbs: BreadcrumbItem[] = [{ label: 'Home', href: '/' }];
 
   let currentPath = '';
-  
+
   for (let i = 0; i < pathSegments.length; i++) {
     const segment = pathSegments[i];
     currentPath += `/${segment}`;
-    
+
     // Skip dynamic segments (like [slug])
     if (segment.startsWith('[') && segment.endsWith(']')) {
       continue;
     }
-    
+
     // Handle known route patterns
     if (segment === 'sponsors') {
       breadcrumbs.push({ label: 'Sponsors', href: currentPath });
@@ -123,20 +115,23 @@ function formatSegmentName(segment: string): string {
 }
 
 // Hook for getting breadcrumb data with metadata
-export function useBreadcrumbs(pageTitle?: string, pageType?: string): BreadcrumbItem[] {
+export function useBreadcrumbs(
+  pageTitle?: string,
+  pageType?: string
+): BreadcrumbItem[] {
   const pathname = usePathname();
-  
+
   // If we have a page title, use it for the last breadcrumb
   if (pageTitle && pageType) {
     const baseBreadcrumbs = generateBreadcrumbsFromPath(pathname);
-    
+
     // Replace the last item with the actual page title
     if (baseBreadcrumbs.length > 0) {
       baseBreadcrumbs[baseBreadcrumbs.length - 1] = { label: pageTitle };
     }
-    
+
     return baseBreadcrumbs;
   }
-  
+
   return generateBreadcrumbsFromPath(pathname);
 }
