@@ -162,25 +162,70 @@ function ColdStartWidgetWrapper({widget, eventId, eventSlug}: ColdStartWidgetWra
     </div>
   );
 }
-
-function BaseTicketWidget({ eventId }: { eventId: string }) {
-
-  return (
-    <div data-hievents-id={eventId} data-hievents-primary-color="#91b89e" data-hievents-primary-text-color="#14532d" data-hievents-secondary-color="#16a34a" data-hievents-secondary-text-color="#eefff3" data-hievents-background-color="#ffffffbf" data-hievents-widget-type="widget" data-hievents-widget-version="1.0" data-hievents-locale="en" data-hievents-padding="20px" data-hievents-autoresize="true" data-hievents-continue-button-text="Continue" className="hievents-widget rounded-lg"/>
-  );
-}
-
 interface TicketWidgetProps {
   eventId: string;
   eventSlug?: string;
+  primaryColor?: string;
+  primaryTextColor?: string;
+  secondaryColor?: string;
+  secondaryTextColor?: string;
+  backgroundColor?: string;
+  widgetType?: string;
+  widgetVersion?: string;
+  locale?: string;
 }
+const BaseTicketWidget = ({
+    eventId,
+    primaryColor = "#91b89e",
+    primaryTextColor = "#14532d",
+    secondaryColor = "#16a34a",
+    secondaryTextColor = "#eefff3",
+    backgroundColor = "#ffffffbf",
+    widgetType = "widget",
+    widgetVersion = "1.0",
+    locale = "en"
+  }: TicketWidgetProps) => {
+    useEffect(() => {
+      const script = document.createElement('script');
+      script.src = HI_EVENTS_HOST + "/widget.js";
+      script.async = true;
+      document.head.appendChild(script);
+  
+      return () => {
+        document.head.removeChild(script);
+      };
+    }, []);
+  
+    return (
+      <div
+        data-hievents-id={eventId}
+        data-hievents-primary-color={primaryColor}
+        data-hievents-primary-text-color={primaryTextColor}
+        data-hievents-secondary-color={secondaryColor}
+        data-hievents-secondary-text-color={secondaryTextColor}
+        data-hievents-background-color={backgroundColor}
+        data-hievents-widget-type={widgetType}
+        data-hievents-widget-version={widgetVersion}
+        data-hievents-locale={locale}
+        className="hievents-widget"
+      />
+    );
+  
+          
+  // return (
+  //   <div data-hievents-id={eventId} data-hievents-primary-color="#91b89e" data-hievents-primary-text-color="#14532d" data-hievents-secondary-color="#16a34a" data-hievents-secondary-text-color="#eefff3" data-hievents-background-color="#ffffffbf" data-hievents-widget-type="widget" data-hievents-widget-version="1.0" data-hievents-locale="en" data-hievents-padding="20px" data-hievents-autoresize="true" data-hievents-continue-button-text="Continue" className="hievents-widget rounded-lg"/>
+  // );
+}
+
+
 
 export default function TicketWidget({ eventId, eventSlug }: TicketWidgetProps) {
   return (
-<><TicketScript/>    <ColdStartWidgetWrapper 
+<>   <ColdStartWidgetWrapper 
       widget={<BaseTicketWidget eventId={eventId} />} 
       eventId={eventId}
       eventSlug={eventSlug}
     /></> 
   );
 }
+
