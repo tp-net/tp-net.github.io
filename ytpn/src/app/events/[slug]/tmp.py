@@ -18,3 +18,4 @@ asstr = "\n".join(domainlist)
 pyperclip.copy(asstr)
 
 
+

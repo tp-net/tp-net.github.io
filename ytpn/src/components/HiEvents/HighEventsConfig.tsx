@@ -1,0 +1,2 @@
+export const HI_EVENTS_HOST = "https://hi-events-all-in-one-816636667737.australia-southeast1.run.app";
+export const HI_EVENTS_ORGANISER_PAGE = `${HI_EVENTS_HOST}/events/1/technical-professionals-network`;

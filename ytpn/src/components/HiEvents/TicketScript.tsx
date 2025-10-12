@@ -104,11 +104,13 @@
 //   return context;
 // }
 
+import { HI_EVENTS_HOST } from "./HighEventsConfig";
+
 export default function TicketScript() {
   return (
     <script 
         async 
-        src="https://hi-events-all-in-one-816636667737.australia-southeast1.run.app/widget.js"
+        src={`${HI_EVENTS_HOST}/widget.js`}
       ></script>
   );
 }

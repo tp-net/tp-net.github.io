@@ -16,6 +16,7 @@ export const events: Event[] = [
     image: "/assets/images/networking1.webp",
     sponsors: [],
     hiEventsId: "1",
+    hiEventsSlug: "tpn-networking-evening-nov-25",
     link: "#",
     slug: "ytpn-networking-meetup",
     tags: ["networking", "social"],
