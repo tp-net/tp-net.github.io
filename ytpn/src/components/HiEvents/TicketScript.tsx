@@ -108,9 +108,21 @@ import { HI_EVENTS_HOST } from "./HighEventsConfig";
 
 export default function TicketScript() {
   return (
-    <script 
-        async 
-        src={`${HI_EVENTS_HOST}/widget.js`}
-      ></script>
+    <>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            // Shim for async execution
+            (function() {
+              var s = document.createElement('script');
+              s.src = '${HI_EVENTS_HOST}/widget.js';
+              s.dataset.hiEventOrigin = new URL(s.src).origin;
+              s.onload = function() { /* optional post-load hook */ };
+              document.head.appendChild(s);
+            })();
+          `,
+        }}
+      />
+    </>
   );
 }

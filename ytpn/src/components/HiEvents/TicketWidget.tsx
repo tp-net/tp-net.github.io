@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Loader2, RefreshCw, ExternalLink } from 'lucide-react';
 import { HI_EVENTS_HOST, HI_EVENTS_ORGANISER_PAGE } from "./HighEventsConfig";
+import TicketScript from './TicketScript';
 
 /**
  * FUNCTIONAL REQUIREMENTS:
@@ -176,10 +177,10 @@ interface TicketWidgetProps {
 
 export default function TicketWidget({ eventId, eventSlug }: TicketWidgetProps) {
   return (
-    <ColdStartWidgetWrapper 
+<><TicketScript/>    <ColdStartWidgetWrapper 
       widget={<BaseTicketWidget eventId={eventId} />} 
       eventId={eventId}
       eventSlug={eventSlug}
-    />
+    /></> 
   );
 }
