@@ -6,13 +6,13 @@ import { sponsors } from './sponsors';
 export const events: Event[] = [
   {
     id: '1',
-    title: "Young Technical Professional's Showcase: Process Engineering",
+    title: "Young Technical Professional's Showcase",
     description:
       "A networking evening where we showcase a young technical professional's project, research, stack or tool.",
     details:
       'Join us at a local pub for an informal networking event and presentation. With friends and colleagues. By and intended for early career professionals, but all are welcome.',
     eventType: EVENT_TYPES.NETWORKING,
-    date: new Date('2025-11-14T17:15:00+10:00'),
+    date: new Date('2025-11-20T17:15:00+10:00'),
     location: 'tbc',
     image: '/assets/images/networking1.webp',
     sponsors: [],
@@ -20,7 +20,7 @@ export const events: Event[] = [
     hiEventsSlug: 'tpn-networking-evening-nov-25',
     showNominationForm: true,
     link: '#',
-    slug: 'ytpn-networking-meetup',
+    slug: 'tpn-networking-evening-nov-25',
     tags: ['networking', 'social'],
     // capacity: 500,
     price: 'Free',
