@@ -1,7 +1,7 @@
 export { default as Header } from './Header';
 export { default as Footer } from './Footer';
 export { default as HeroSection } from './HeroSection';
-export { default as ServicesSection } from './ServicesSection';
+export { default as ParticipateSection } from './ParticipateSection';
 export { default as AboutSection } from './AboutSection';
 export { default as SponsorSection } from './SponsorSection';
 export { default as JoinForm } from './forms/JoinForm';

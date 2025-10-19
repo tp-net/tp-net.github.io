@@ -62,7 +62,7 @@ const services = [
   },
 ];
 
-export default function ServicesSection() {
+export default function ParticipateSection() {
   const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<React.ReactNode>(null);
@@ -87,7 +87,7 @@ export default function ServicesSection() {
   };
 
   return (
-    <section id='services' className='py-20 bg-background-secondary'>
+    <section id='services' className='py-20 bg-background'>
       <div className='container mx-auto px-6'>
         <div className='text-center mb-16'>
           <p className='text-primary font-semibold text-sm uppercase tracking-wide mb-4'>
