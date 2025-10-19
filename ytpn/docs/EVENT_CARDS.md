@@ -20,16 +20,16 @@ The Event Cards system provides a flexible, scalable solution for displaying eve
 
 The system supports eight distinct event types, each with unique styling:
 
-| Type | Icon | Color | Use Case |
-|------|------|-------|----------|
-| `conference` | 🎯 | Primary Blue | Major industry conferences |
-| `workshop` | 🛠️ | Accent Purple | Hands-on learning sessions |
-| `meetup` | 👥 | Success Green | Casual networking events |
-| `networking` | 🤝 | Info Blue | Professional networking |
-| `seminar` | 📚 | Warning Orange | Educational presentations |
-| `hackathon` | 💻 | Destructive Red | Competitive coding events |
-| `panel` | 🎤 | Primary-600 | Expert discussions |
-| `keynote` | ⭐ | Primary-800 | Featured presentations |
+| Type         | Icon | Color           | Use Case                   |
+| ------------ | ---- | --------------- | -------------------------- |
+| `conference` | 🎯   | Primary Blue    | Major industry conferences |
+| `workshop`   | 🛠️   | Accent Purple   | Hands-on learning sessions |
+| `meetup`     | 👥   | Success Green   | Casual networking events   |
+| `networking` | 🤝   | Info Blue       | Professional networking    |
+| `seminar`    | 📚   | Warning Orange  | Educational presentations  |
+| `hackathon`  | 💻   | Destructive Red | Competitive coding events  |
+| `panel`      | 🎤   | Primary-600     | Expert discussions         |
+| `keynote`    | ⭐   | Primary-800     | Featured presentations     |
 
 ## API Reference
 
@@ -37,22 +37,22 @@ The system supports eight distinct event types, each with unique styling:
 
 ```typescript
 interface EventData {
-  id: string;                    // Unique identifier
-  title: string;                 // Event title
-  description: string;           // Event description
-  eventType: EventType;         // One of the 8 supported types
-  date: string;                 // Event date (formatted string)
-  time: string;                 // Event time (formatted string)
-  location: string;             // Event location
-  image?: string;               // Optional event image URL
-  link?: string;                // Optional external link
-  content?: ReactNode;          // Optional custom content
-  sponsors?: string[];          // Optional sponsor list
-  tags?: string[];              // Optional tag list
-  organizers?: string[];        // Optional organizer list
-  capacity?: number;            // Optional capacity limit
-  price?: string;               // Optional price information
-  isVirtual?: boolean;          // Virtual event flag
+  id: string; // Unique identifier
+  title: string; // Event title
+  description: string; // Event description
+  eventType: EventType; // One of the 8 supported types
+  date: string; // Event date (formatted string)
+  time: string; // Event time (formatted string)
+  location: string; // Event location
+  image?: string; // Optional event image URL
+  link?: string; // Optional external link
+  content?: ReactNode; // Optional custom content
+  sponsors?: string[]; // Optional sponsor list
+  tags?: string[]; // Optional tag list
+  organizers?: string[]; // Optional organizer list
+  capacity?: number; // Optional capacity limit
+  price?: string; // Optional price information
+  isVirtual?: boolean; // Virtual event flag
 }
 ```
 
@@ -60,10 +60,10 @@ interface EventData {
 
 ```typescript
 interface EventCardProps {
-  event: EventData;             // Event data object
-  scale?: EventCardScale;       // Card scale ('compact' | 'standard' | 'featured')
-  className?: string;           // Additional CSS classes
-  onClick?: () => void;         // Click handler
+  event: EventData; // Event data object
+  scale?: EventCardScale; // Card scale ('compact' | 'standard' | 'featured')
+  className?: string; // Additional CSS classes
+  onClick?: () => void; // Click handler
 }
 ```
 
@@ -72,16 +72,16 @@ interface EventCardProps {
 ### Basic Usage
 
 ```tsx
-import { EventCard, sampleEvents } from '@/components';
+import { StandardEventCard } from '@/components';
+import { events } from '@/db/data/events';
 
 function EventList() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {sampleEvents.map((event) => (
-        <EventCard
+    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+      {events.map(event => (
+        <StandardEventCard
           key={event.id}
           event={event}
-          scale="standard"
           onClick={() => console.log('Event clicked:', event)}
         />
       ))}
@@ -93,10 +93,10 @@ function EventList() {
 ### Using Specialized Components
 
 ```tsx
-import { 
-  CompactEventCard, 
-  StandardEventCard, 
-  FeaturedEventCard 
+import {
+  CompactEventCard,
+  StandardEventCard,
+  FeaturedEventCard,
 } from '@/components';
 
 function EventDashboard() {
@@ -104,17 +104,17 @@ function EventDashboard() {
     <div>
       {/* Featured event */}
       <FeaturedEventCard event={featuredEvent} />
-      
+
       {/* Standard events grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {standardEvents.map((event) => (
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+        {standardEvents.map(event => (
           <StandardEventCard key={event.id} event={event} />
         ))}
       </div>
-      
+
       {/* Compact events list */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {compactEvents.map((event) => (
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
+        {compactEvents.map(event => (
           <CompactEventCard key={event.id} event={event} />
         ))}
       </div>
@@ -123,19 +123,31 @@ function EventDashboard() {
 }
 ```
 
-### Using the Factory Function
+### Using Different Card Types
 
 ```tsx
-import { createEventCard, sampleEvents } from '@/components';
+import { StandardEventCard, FeaturedEventCard } from '@/components';
+import { events } from '@/db/data/events';
 
-function DynamicEventList({ scale }: { scale: EventCardScale }) {
-  const EventCardComponent = createEventCard(scale);
-  
+function EventList() {
+  const featuredEvents = events.slice(0, 2);
+  const regularEvents = events.slice(2);
+
   return (
-    <div className="grid gap-6">
-      {sampleEvents.map((event) => (
-        <EventCardComponent key={event.id} event={event} />
-      ))}
+    <div>
+      {/* Featured Events */}
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12'>
+        {featuredEvents.map(event => (
+          <FeaturedEventCard key={event.id} event={event} />
+        ))}
+      </div>
+
+      {/* Regular Events */}
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+        {regularEvents.map(event => (
+          <StandardEventCard key={event.id} event={event} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -143,16 +155,8 @@ function DynamicEventList({ scale }: { scale: EventCardScale }) {
 
 ## Scale Specifications
 
-### Compact Scale
-- **Use Case**: Lists, sidebars, dense layouts
-- **Max Width**: 384px (max-w-sm)
-- **Padding**: 16px (p-4)
-- **Title Size**: text-lg
-- **Description**: text-sm, 2-line clamp
-- **Grid**: 1-4 columns responsive
-- **Features**: Minimal information, essential details only
-
 ### Standard Scale
+
 - **Use Case**: Main content areas, event listings
 - **Max Width**: 448px (max-w-md)
 - **Padding**: 24px (p-6)
@@ -162,6 +166,7 @@ function DynamicEventList({ scale }: { scale: EventCardScale }) {
 - **Features**: Comprehensive information, balanced layout
 
 ### Featured Scale
+
 - **Use Case**: Hero sections, highlights, premium displays
 - **Max Width**: 512px (max-w-lg)
 - **Padding**: 32px (p-8)
@@ -174,12 +179,12 @@ function DynamicEventList({ scale }: { scale: EventCardScale }) {
 
 ### Breakpoint Strategy
 
-| Screen Size | Compact | Standard | Featured |
-|-------------|---------|----------|----------|
-| Mobile (320px+) | 1 column | 1 column | 1 column |
-| Tablet (768px+) | 2-3 columns | 2 columns | 1 column |
-| Desktop (1024px+) | 3-4 columns | 3 columns | 2 columns |
-| Large (1280px+) | 4 columns | 3 columns | 2 columns |
+| Screen Size       | Standard  | Featured  |
+| ----------------- | --------- | --------- |
+| Mobile (320px+)   | 1 column  | 1 column  |
+| Tablet (768px+)   | 2 columns | 1 column  |
+| Desktop (1024px+) | 3 columns | 2 columns |
+| Large (1280px+)   | 3 columns | 2 columns |
 
 ### Mobile Optimizations
 
@@ -305,27 +310,32 @@ Visit `/event-cards-demo` to see all event card scales in action with:
 ### Common Issues
 
 **Cards not displaying properly**
+
 - Check that event data matches the `EventData` interface
 - Verify theme system is properly configured
 - Ensure Tailwind CSS is compiled with all required classes
 
 **Responsive layout issues**
+
 - Test on actual devices, not just browser dev tools
 - Check grid container classes and gap values
 - Verify breakpoint-specific styling
 
 **Theme system not working**
+
 - Ensure ThemeProvider is wrapping the application
 - Check CSS custom properties are loaded
 - Verify dark mode toggle functionality
 
 **Accessibility issues**
+
 - Test with screen readers
 - Check keyboard navigation
 - Validate color contrast ratios
 - Ensure proper ARIA labels
 
 **Nested button interactions not working**
+
 - The event cards wrap clickable content in a Link element for navigation
 - Interactive elements (buttons, anchors) inside cards use event delegation to prevent parent navigation
 - The parent Link checks `e.target.closest('button, a[href]')` to detect nested interactive elements

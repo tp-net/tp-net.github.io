@@ -1,5 +1,6 @@
 import { type Event } from '../typesAndFunctions/events';
 import { EVENT_TYPES } from '../typesAndFunctions/events';
+import { formLinks } from './forms';
 import { sponsors } from './sponsors';
 
 export const events: Event[] = [
@@ -17,6 +18,7 @@ export const events: Event[] = [
     sponsors: [],
     hiEventsId: '1',
     hiEventsSlug: 'tpn-networking-evening-nov-25',
+    showNominationForm: true,
     link: '#',
     slug: 'ytpn-networking-meetup',
     tags: ['networking', 'social'],
@@ -34,11 +36,13 @@ export const events: Event[] = [
     // date: new Date("2025-03-15T09:00:00+10:00"),
     location: 'Convention Center, Brisbane',
     image: '/assets/images/networking2.webp',
+    showNominationForm: true,
     link: '#',
     slug: 'ytpn-annual-conference-2025',
-    tags: ['networking', 'keynote', 'workshop', 'conference'],
+    tags: ['social'],
     capacity: 500,
-    price: '$150',
+    price: 'TBC',
     isVirtual: false,
+    // organizers: ["Wood", "Rio Tinto"]
   },
 ];

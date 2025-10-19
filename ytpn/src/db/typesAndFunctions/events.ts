@@ -1,22 +1,22 @@
-import {  type Sponsor } from "./sponsors";
+import { type Sponsor } from './sponsors';
 
 export const EVENT_TYPES = {
-  ALL: "all",
-  CONFERENCE: "conference",
-  WORKSHOP: "workshop",
-  MEETUP: "meetup",
-  NETWORKING: "networking",
-  SEMINAR: "seminar",
-  HACKATHON: "hackathon",
-  PANEL: "panel",
-  KEYNOTE: "keynote",
-  SOCIAL: "social"
+  ALL: 'all',
+  CONFERENCE: 'conference',
+  WORKSHOP: 'workshop',
+  MEETUP: 'meetup',
+  NETWORKING: 'networking',
+  SEMINAR: 'seminar',
+  HACKATHON: 'hackathon',
+  PANEL: 'panel',
+  KEYNOTE: 'keynote',
+  SOCIAL: 'social',
 } as const;
 
 export interface Event {
   id?: string;
   title: string;
-  
+
   description?: string;
   details?: string;
   eventType: (typeof EVENT_TYPES)[keyof typeof EVENT_TYPES];
@@ -33,8 +33,7 @@ export interface Event {
   price?: string;
   isVirtual?: boolean;
   slug: string;
+  showNominationForm?: boolean;
 }
-
-
 
 // Event utility functions moved to separate file to avoid circular dependencies
