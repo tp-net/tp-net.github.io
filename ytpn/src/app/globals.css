@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -228,8 +228,8 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings:
-      "rlig" 1,
-      "calt" 1;
+      'rlig' 1,
+      'calt' 1;
   }
 
   /* Smooth transitions for theme switching */
@@ -409,5 +409,17 @@
 
   .animate-gradient-shift-reverse {
     animation: gradient-shift-reverse 3s ease-in-out infinite;
+  }
+
+  /* Sigma.js specific overrides to ensure interactivity */
+  .sigma-container,
+  .sigma-container * {
+    pointer-events: auto !important;
+  }
+
+  .sigma-container canvas {
+    pointer-events: auto !important;
+    user-select: none !important;
+    touch-action: none !important;
   }
 }

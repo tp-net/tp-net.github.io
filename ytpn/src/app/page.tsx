@@ -6,6 +6,7 @@ import {
   ProcessSection,
   FocusAreasSection,
   EventsSection,
+  IndustriesSection,
 } from '@/components';
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <AboutSection />
       <ProcessSection />
       <ParticipateSection />
+      <IndustriesSection />
       <SponsorSection />
       <FocusAreasSection />
     </div>

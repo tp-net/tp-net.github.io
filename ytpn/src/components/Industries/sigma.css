@@ -1,0 +1,10 @@
+/* Ensure Sigma containers always have height */
+div[data-sigma-container] {
+  min-height: 400px !important;
+}
+
+/* Force proper height for graph containers */
+.sigma-container {
+  height: 100% !important;
+  min-height: 400px !important;
+}
