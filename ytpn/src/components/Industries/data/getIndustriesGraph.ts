@@ -32,9 +32,11 @@ export function createIndustryGraph(
 
     graph.addNode(node.id, {
       label: node.label,
-      size: node.size,
-      color: isDark ? node.color.dark : node.color.light,
-      labelColor: { attribute: isDark ? palette.dark.foreground : palette.light.foreground },
+      size: node.category.size,
+      color: isDark ? node.category.color.dark : node.category.color.light,
+      labelColor: {
+        attribute: isDark ? palette.dark.foreground : palette.light.foreground,
+      },
       x,
       y,
       highlighted: false,
@@ -42,8 +44,8 @@ export function createIndustryGraph(
       pinned: false,
       category: node.category,
       // Add properties for node scaling
-      baseSize: node.size,
-      scaleFactor: Math.max(0.5, Math.min(3, node.size / 15)), // Normalize size for scaling
+      baseSize: node.category.size,
+      scaleFactor: Math.max(0.5, Math.min(3, node.category.size / 15)), // Normalize size for scaling
     });
   });
 
@@ -52,7 +54,7 @@ export function createIndustryGraph(
     // Only add edge if both source and target nodes exist
     if (graph.hasNode(edge.source) && graph.hasNode(edge.target)) {
       graph.addEdge(edge.source, edge.target, {
-        color: edge.color ? (isDark ? edge.color.dark : edge.color.light) : (isDark ? palette.dark.foreground : palette.light.foreground),
+        color: isDark ? palette.dark.foreground : palette.light.foreground,
         size: 2, // Default edge size
         weight: 1, // Default edge weight
       });

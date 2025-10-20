@@ -3,9 +3,8 @@
  * Functional Requirements:
  * - Generic network graph visualization component
  * - Light and Dark mode support using theme system
- * - Drag and drop functionality for nodes
- * - Multiple layout algorithms (force, forceatlas2, noverlap)
- * - Real-time configuration controls
+ * - Drag and drop functionality for nodes with fixed lock mode
+ * - Force layout algorithm with configurable parameters
  * - Responsive design with proper theming
  * - Client-side rendering to prevent SSR issues
  * - Configurable graph data source
@@ -75,9 +74,9 @@ export interface BaseGraphProps {
   setDraggedNode: (node: string | null) => void;
   dragLockMode: 'none' | 'fixed' | 'pinned';
   forceConfig: ForceLayoutConfig;
-  forceAtlas2Config: ForceAtlas2LayoutConfig;
-  noverlapConfig: NoverlapLayoutConfig;
-  controlsComponent?: React.ReactNode;
+  forceAtlas2Config?: ForceAtlas2LayoutConfig;
+  noverlapConfig?: NoverlapLayoutConfig;
+  minHeight?: string;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -91,8 +90,8 @@ const BaseGraphCore: React.FC<{
   setDraggedNode: (node: string | null) => void;
   dragLockMode: 'none' | 'fixed' | 'pinned';
   forceConfig: ForceLayoutConfig;
-  forceAtlas2Config: ForceAtlas2LayoutConfig;
-  noverlapConfig: NoverlapLayoutConfig;
+  forceAtlas2Config?: ForceAtlas2LayoutConfig;
+  noverlapConfig?: NoverlapLayoutConfig;
 }> = ({
   graphData,
   layout,
@@ -102,8 +101,8 @@ const BaseGraphCore: React.FC<{
   setDraggedNode,
   dragLockMode,
   forceConfig,
-  forceAtlas2Config,
-  noverlapConfig,
+  forceAtlas2Config = {} as ForceAtlas2LayoutConfig,
+  noverlapConfig = {} as NoverlapLayoutConfig,
 }) => {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === 'dark';
@@ -126,8 +125,8 @@ const BaseGraphCore: React.FC<{
     // Apply node scaling if enabled - only update visual properties, not layout
     if (
       forceConfig.nodeScaling ||
-      forceAtlas2Config.nodeScaling ||
-      noverlapConfig.nodeScaling
+      forceAtlas2Config?.nodeScaling ||
+      noverlapConfig?.nodeScaling
     ) {
       graph.forEachNode(nodeId => {
         const node = graph.getNodeAttributes(nodeId);
@@ -141,18 +140,19 @@ const BaseGraphCore: React.FC<{
               (1 + (forceConfig.scalingRatio - 1) * node.scaleFactor);
             graph.setNodeAttribute(nodeId, 'size', scaledSize);
           }
-          if (forceAtlas2Config.nodeScaling && layout === 'forceatlas2') {
+          if (forceAtlas2Config?.nodeScaling && layout === 'forceatlas2') {
             // Scale node size based on configuration
             const scaledSize =
               node.baseSize *
-              (1 + (forceAtlas2Config.scalingRatio - 1) * node.scaleFactor);
+              (1 +
+                ((forceAtlas2Config.scalingRatio || 1) - 1) * node.scaleFactor);
             graph.setNodeAttribute(nodeId, 'size', scaledSize);
           }
-          if (noverlapConfig.nodeScaling && layout === 'noverlap') {
+          if (noverlapConfig?.nodeScaling && layout === 'noverlap') {
             // Scale node size based on configuration
             const scaledSize =
               node.baseSize *
-              (1 + (noverlapConfig.margin / 10) * node.scaleFactor);
+              (1 + ((noverlapConfig.margin || 8) / 10) * node.scaleFactor);
             graph.setNodeAttribute(nodeId, 'size', scaledSize);
           }
         }
@@ -327,10 +327,10 @@ const BaseGraphCore: React.FC<{
   }, [
     forceConfig.nodeScaling,
     forceConfig.scalingRatio,
-    forceAtlas2Config.nodeScaling,
-    forceAtlas2Config.scalingRatio,
-    noverlapConfig.nodeScaling,
-    noverlapConfig.margin,
+    forceAtlas2Config?.nodeScaling,
+    forceAtlas2Config?.scalingRatio,
+    noverlapConfig?.nodeScaling,
+    noverlapConfig?.margin,
     layout,
     draggedNode, // Include draggedNode to prevent changes during drag
   ]);
@@ -438,8 +438,8 @@ const BaseGraph: React.FC<BaseGraphProps> = ({
   forceConfig,
   forceAtlas2Config,
   noverlapConfig,
-  controlsComponent,
-  className = 'h-full w-full min-h-[600px] relative bg-background',
+  minHeight = '600px',
+  className = 'h-full w-full relative bg-background',
   style,
 }) => {
   const [isMounted, setIsMounted] = useState(false);
@@ -452,7 +452,7 @@ const BaseGraph: React.FC<BaseGraphProps> = ({
   // Don't render anything until mounted on client side
   if (!isMounted) {
     return (
-      <div className={className} style={style}>
+      <div className={className} style={{ ...style, minHeight }}>
         <div className='flex items-center justify-center h-full'>
           <div className='text-foreground'>Loading graph...</div>
         </div>
@@ -461,7 +461,7 @@ const BaseGraph: React.FC<BaseGraphProps> = ({
   }
 
   return (
-    <div className={className} style={style}>
+    <div className={className} style={{ ...style, minHeight }}>
       <SigmaContainer
         style={{ height: '100%', width: '100%' }}
         settings={{ allowInvalidContainer: true }}
@@ -479,7 +479,6 @@ const BaseGraph: React.FC<BaseGraphProps> = ({
           noverlapConfig={noverlapConfig}
         />
       </SigmaContainer>
-      {controlsComponent}
     </div>
   );
 };
@@ -488,7 +487,10 @@ const BaseGraph: React.FC<BaseGraphProps> = ({
 const DynamicBaseGraph = dynamic(() => Promise.resolve(BaseGraph), {
   ssr: false,
   loading: () => (
-    <div className='h-full w-full min-h-[600px] relative flex items-center justify-center bg-background'>
+    <div
+      className='h-full w-full relative flex items-center justify-center bg-background'
+      style={{ minHeight: '600px' }}
+    >
       <div className='text-foreground'>Loading graph...</div>
     </div>
   ),

@@ -1,14 +1,6 @@
 import dynamic from 'next/dynamic';
 
-// Dynamically import IndustriesGraph to prevent SSR issues
-const IndustriesGraph = dynamic(() => import('./IndustriesGraph'), {
-  ssr: false,
-  loading: () => (
-    <div className='h-full w-full flex items-center justify-center bg-background'>
-      <div className='text-foreground'>Loading industries graph...</div>
-    </div>
-  ),
-});
+import IndustriesGraph from './IndustriesGraph';
 
 export default function IndustriesSection() {
   return (
