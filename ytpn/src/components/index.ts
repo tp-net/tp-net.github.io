@@ -3,7 +3,7 @@ export { default as Footer } from './Footer';
 export { default as HeroSection } from './HeroSection';
 export { default as ParticipateSection } from './ParticipateSection';
 export { default as AboutSection } from './AboutSection';
-export { default as SponsorSection } from './SponsorSection';
+export { default as PartnerSection } from './PartnerSection';
 export { default as JoinForm } from './forms/JoinForm';
 export { default as BaseEmbedableForm } from './forms/BaseEmbedableForm';
 export { default as BlogSection } from './BlogSection';

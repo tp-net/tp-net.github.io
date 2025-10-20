@@ -24,7 +24,7 @@ interface MetadataBreadcrumbProps {
 
 // Default breadcrumb mappings for common routes
 const defaultBreadcrumbs: Record<string, BreadcrumbItem[]> = {
-  '/sponsors': [{ label: 'Home', href: '/' }, { label: 'Sponsors' }],
+  '/partners': [{ label: 'Home', href: '/' }, { label: 'Partners' }],
   '/events': [{ label: 'Home', href: '/' }, { label: 'Events' }],
   '/blog': [{ label: 'Home', href: '/' }, { label: 'Blog' }],
 };

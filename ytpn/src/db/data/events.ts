@@ -1,7 +1,7 @@
 import { type Event } from '../typesAndFunctions/events';
 import { EVENT_TYPES } from '../typesAndFunctions/events';
 import { formLinks } from './forms';
-import { sponsors } from './sponsors';
+import { partners } from './partners';
 
 export const events: Event[] = [
   {

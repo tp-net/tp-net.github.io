@@ -5,9 +5,9 @@ export * from './app';
 export * from './typesAndFunctions/events';
 export * from './typesAndFunctions/eventUtils';
 export * from './typesAndFunctions/forms';
-export * from './typesAndFunctions/sponsors';
+export * from './typesAndFunctions/partners';
 
 // Re-export everything from data
 export * from './data/events';
 export * from './data/forms';
-export * from './data/sponsors';
+export * from './data/partners';

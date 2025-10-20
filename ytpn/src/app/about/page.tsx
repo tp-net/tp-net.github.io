@@ -38,7 +38,7 @@ export default function AboutPage() {
                 Join Our Network
               </a>
               <a
-                href='/sponsors'
+                href='/partners'
                 className='px-8 py-3 border border-primary text-primary rounded-lg font-semibold hover:bg-primary/10 transition-colors'
               >
                 Partner With Us

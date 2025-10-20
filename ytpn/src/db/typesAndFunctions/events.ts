@@ -1,4 +1,4 @@
-import { type Sponsor } from './sponsors';
+import { type Sponsor } from './partners';
 
 export const EVENT_TYPES = {
   ALL: 'all',

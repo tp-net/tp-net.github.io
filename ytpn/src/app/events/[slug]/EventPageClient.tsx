@@ -290,7 +290,7 @@ export default function EventPageClient({
                   {event.sponsors.map((sponsor, index) => (
                     <Link
                       key={index}
-                      href={`/sponsors/${sponsor.slug}`}
+                      href={`/partners/${sponsor.slug}`}
                       className='flex items-center gap-2 bg-background-secondary rounded-lg p-3 hover:bg-background-secondary/80 transition-colors'
                     >
                       <Image

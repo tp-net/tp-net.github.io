@@ -1,10 +1,14 @@
 /* Ensure Sigma containers always have height */
 div[data-sigma-container] {
   min-height: 400px !important;
+  /* Enable touch dragging by disabling browser gestures (pinch/scroll) inside graph */
+  touch-action: none;
 }
 
 /* Force proper height for graph containers */
 .sigma-container {
   height: 100% !important;
   min-height: 400px !important;
+  /* Ensure pointer/touch events behave consistently */
+  touch-action: none;
 }

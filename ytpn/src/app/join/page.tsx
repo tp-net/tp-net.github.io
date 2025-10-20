@@ -116,7 +116,7 @@ export default function JoinPage() {
                 </Link>
 
                 <Link
-                  href='/sponsors'
+                  href='/partners'
                   className='flex items-center justify-between p-4 bg-background-secondary rounded-xl border border-border hover:bg-background-tertiary transition-colors group'
                 >
                   <div>

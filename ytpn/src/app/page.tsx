@@ -2,7 +2,7 @@ import {
   HeroSection,
   ParticipateSection,
   AboutSection,
-  SponsorSection,
+  PartnerSection,
   ProcessSection,
   FocusAreasSection,
   EventsSection,
@@ -17,7 +17,7 @@ export default function Home() {
       <ProcessSection />
       <ParticipateSection />
       <IndustriesSection />
-      <SponsorSection />
+      <PartnerSection />
       <FocusAreasSection />
     </div>
   );

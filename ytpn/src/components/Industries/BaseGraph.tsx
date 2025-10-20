@@ -9,6 +9,7 @@
  * - Client-side rendering to prevent SSR issues
  * - Configurable graph data source
  * - Customizable styling and behavior
+ * - Touch and pointer interaction support for drag, move, and release
  *
  */
 import React, { useEffect, useState } from 'react';
@@ -186,6 +187,10 @@ const BaseGraphCore: React.FC<{
       defaultEdgeColor: isDark
         ? palette.dark.foreground
         : palette.light.foreground,
+      // Disable camera movement when dragging a node
+      enableCameraRotation: !draggedNode,
+      enableCameraPanning: !draggedNode,
+      enableCameraZooming: !draggedNode,
       defaultDrawNodeHover: (ctx, data, settings) => {
         const { x, y, size, color, label } = data;
         const borderColor = isDark
@@ -291,7 +296,7 @@ const BaseGraphCore: React.FC<{
         sigma.getCamera().animatedReset({ duration: 1000 });
       }
     }, 1000);
-  }, [setSettings, sigma, isDark]);
+  }, [setSettings, sigma, isDark, draggedNode]);
 
   // Handle layout workers
   useEffect(() => {
@@ -342,6 +347,47 @@ const BaseGraphCore: React.FC<{
       return;
     }
 
+    // Normalize mouse/touch coordinates to graph coordinates
+    const getGraphCoordsFromEvent = (evt: any) => {
+      const original = evt?.original as any;
+      let clientX: number | undefined;
+      let clientY: number | undefined;
+
+      if (original?.touches && original.touches.length > 0) {
+        clientX = original.touches[0].clientX;
+        clientY = original.touches[0].clientY;
+      } else if (
+        original?.changedTouches &&
+        original.changedTouches.length > 0
+      ) {
+        clientX = original.changedTouches[0].clientX;
+        clientY = original.changedTouches[0].clientY;
+      } else if (
+        typeof original?.clientX === 'number' &&
+        typeof original?.clientY === 'number'
+      ) {
+        clientX = original.clientX;
+        clientY = original.clientY;
+      } else if (typeof evt?.x === 'number' && typeof evt?.y === 'number') {
+        clientX = evt.x;
+        clientY = evt.y;
+      }
+
+      // Get the container's position to calculate relative coordinates
+      const container = sigma.getContainer();
+      const rect = container.getBoundingClientRect();
+
+      // Convert client coordinates to container-relative coordinates
+      const containerX = (clientX ?? 0) - rect.left;
+      const containerY = (clientY ?? 0) - rect.top;
+
+      const viewportPoint = { x: containerX, y: containerY } as {
+        x: number;
+        y: number;
+      };
+      return sigma.viewportToGraph(viewportPoint as { x: number; y: number });
+    };
+
     registerEvents({
       downNode: e => {
         setDraggedNode(e.node);
@@ -356,12 +402,29 @@ const BaseGraphCore: React.FC<{
         }
 
         document.body.style.cursor = 'grabbing';
+
+        // Prevent default sigma behavior (camera pan) when starting node drag
+        e.preventSigmaDefault();
       },
 
       mousemovebody: e => {
         if (!draggedNode) return;
 
-        const pos = sigma.viewportToGraph(e);
+        const pos = getGraphCoordsFromEvent(e);
+        const graph = sigma.getGraph();
+        graph.setNodeAttribute(draggedNode, 'x', pos.x);
+        graph.setNodeAttribute(draggedNode, 'y', pos.y);
+
+        e.preventSigmaDefault();
+        e.original.preventDefault();
+        e.original.stopPropagation();
+      },
+
+      // Touch and Pointer move support mirrors mousemovebody
+      touchmovebody: e => {
+        if (!draggedNode) return;
+
+        const pos = getGraphCoordsFromEvent(e);
         const graph = sigma.getGraph();
         graph.setNodeAttribute(draggedNode, 'x', pos.x);
         graph.setNodeAttribute(draggedNode, 'y', pos.y);
@@ -388,8 +451,15 @@ const BaseGraphCore: React.FC<{
         }
       },
 
-      mousedown: () => {
+      // Touch end handled via global listener to avoid event map type mismatch
+
+      mousedown: e => {
+        // Prevent camera pan when clicking for node drag
         if (!sigma.getCustomBBox()) sigma.setCustomBBox(sigma.getBBox());
+        // If we're about to drag a node, prevent default camera behavior
+        if (draggedNode) {
+          e.preventSigmaDefault();
+        }
       },
 
       enterNode: () => {
@@ -423,6 +493,53 @@ const BaseGraphCore: React.FC<{
     dragLockMode,
     setDraggedNode,
   ]);
+
+  // Add global touch event support for dragging on touch devices
+  useEffect(() => {
+    if (!dragMode) return;
+
+    const handleTouchMove = (ev: TouchEvent) => {
+      if (!draggedNode) return;
+      if (ev.touches.length === 0) return;
+
+      const touch = ev.touches[0];
+
+      // Get the container's position to calculate relative coordinates
+      const container = sigma.getContainer();
+      const rect = container.getBoundingClientRect();
+
+      // Convert client coordinates to container-relative coordinates
+      const containerX = touch.clientX - rect.left;
+      const containerY = touch.clientY - rect.top;
+
+      const pos = sigma.viewportToGraph({ x: containerX, y: containerY });
+      const graph = sigma.getGraph();
+      graph.setNodeAttribute(draggedNode, 'x', pos.x);
+      graph.setNodeAttribute(draggedNode, 'y', pos.y);
+
+      ev.preventDefault();
+      ev.stopPropagation();
+    };
+
+    const handleTouchEnd = (_ev: TouchEvent) => {
+      if (!draggedNode) return;
+      const graph = sigma.getGraph();
+      graph.setNodeAttribute(draggedNode, 'highlighted', false);
+      if (dragLockMode === 'fixed') {
+        graph.setNodeAttribute(draggedNode, 'fixed', false);
+      }
+      setDraggedNode(null);
+      document.body.style.cursor = 'default';
+    };
+
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('touchend', handleTouchEnd, { passive: false });
+
+    return () => {
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [dragMode, draggedNode, sigma, setDraggedNode, dragLockMode]);
 
   return null;
 };
