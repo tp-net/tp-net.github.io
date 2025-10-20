@@ -1,6 +1,18 @@
 'use client';
+/**
+ * Functional Requirements:
+ * - Interactive network graph visualization of industries
+ * - Light and Dark mode support using theme system
+ * - Drag and drop functionality for nodes
+ * - Multiple layout algorithms (force, forceatlas2, noverlap)
+ * - Real-time configuration controls
+ * - Responsive design with proper theming
+ * - Client-side rendering to prevent SSR issues
+ *
+ */
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
+
 import {
   SigmaContainer,
   useLoadGraph,
@@ -11,9 +23,11 @@ import {
 import { useWorkerLayoutForce } from '@react-sigma/layout-force';
 import { useWorkerLayoutForceAtlas2 } from '@react-sigma/layout-forceatlas2';
 import { useWorkerLayoutNoverlap } from '@react-sigma/layout-noverlap';
+import { useTheme } from '@/components/providers/ThemeProvider';
+import { palette } from '@/styles/palette';
 import './sigma.css';
 import { DragLayoutControls } from './config';
-import { getIndustryGraph } from './data/getIndustries';
+import { getIndustryGraph } from './data/getIndustriesGraph';
 
 const IndustriesGraphCore: React.FC<{
   layout: string;
@@ -25,7 +39,6 @@ const IndustriesGraphCore: React.FC<{
   forceConfig: any;
   forceAtlas2Config: any;
   noverlapConfig: any;
-  isDark: boolean;
 }> = ({
   layout,
   isLayoutRunning,
@@ -36,8 +49,9 @@ const IndustriesGraphCore: React.FC<{
   forceConfig,
   forceAtlas2Config,
   noverlapConfig,
-  isDark,
 }) => {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
   const loadGraph = useLoadGraph();
   const setSettings = useSetSettings();
   const registerEvents = useRegisterEvents();
@@ -102,25 +116,114 @@ const IndustriesGraphCore: React.FC<{
       allowInvalidContainer: true,
       renderLabels: true,
       labelSize: 12,
-      defaultNodeColor: isDark ? '#3b82f6' : '#2563eb',
-      defaultEdgeColor: isDark ? '#6b7280' : '#9ca3af',
+      labelWeight: 'bold',
+      labelFont: 'system-ui, -apple-system, sans-serif',
+      labelColor: {
+        color: isDark ? palette.dark.foreground : palette.light.foreground,
+      },
+      hideLabelsOnMove: false,
+      labelDensity: 1,
+      labelRenderedSizeThreshold: 0,
+      defaultNodeColor: isDark ? palette.dark.primary : palette.light.primary,
+      defaultEdgeColor: isDark
+        ? palette.dark.foreground
+        : palette.light.foreground,
+      defaultDrawNodeHover: (ctx, data, settings) => {
+        const { x, y, size, color, label } = data;
+        const borderColor = isDark
+          ? palette.dark.background
+          : palette.light.background;
+        const borderWidth = 3;
+        const textBackgroundColor = isDark
+          ? palette.dark.foreground
+          : palette.light.foreground;
+        const textColor = isDark
+          ? palette.dark.background
+          : palette.light.background;
+        const padding = 2;
+
+        // Save the current context state
+        ctx.save();
+
+        // Set the border color and width
+        ctx.strokeStyle = borderColor;
+        ctx.lineWidth = borderWidth;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        // Draw the border circle
+        ctx.beginPath();
+        ctx.arc(x, y, size + borderWidth / 2, 0, 2 * Math.PI);
+        ctx.stroke();
+
+        // Draw text background if label exists
+        if (label) {
+          const fontSize = settings.labelSize || 12;
+          const font =
+            settings.labelFont || 'system-ui, -apple-system, sans-serif';
+          const fontWeight = settings.labelWeight || 'bold';
+          const labelColor = textColor;
+
+          // Set font and measure text (matching original settings)
+          ctx.font = `${fontWeight} ${fontSize}px ${font}`;
+          const textWidth = ctx.measureText(label).width;
+          const textHeight = fontSize;
+
+          // Draw text background
+          ctx.fillStyle = textBackgroundColor;
+          ctx.fillRect(
+            x + size + padding,
+            y - textHeight / 2 - padding,
+            textWidth + 2 * padding,
+            textHeight + 2 * padding
+          );
+
+          // Draw node label (using original label color)
+          ctx.fillStyle = labelColor;
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(label, x + size + padding * 2, y);
+        }
+
+        // Restore the context state
+        ctx.restore();
+      },
       nodeReducer: (_, attrs) => ({
         ...attrs,
         size: attrs.highlighted ? attrs.size * 1.3 : attrs.size,
+        color: attrs.highlighted
+          ? isDark
+            ? palette.dark.primary
+            : palette.light.primary
+          : attrs.color ||
+            (isDark ? palette.dark.primary : palette.light.primary),
+        highlighted: attrs.highlighted || false,
+        // Custom properties for visual styling (not part of NodeDisplayData interface)
         borderColor: attrs.highlighted
           ? isDark
-            ? '#ffffff'
-            : '#000000'
+            ? palette.dark.foreground
+            : palette.light.foreground
           : attrs.pinned
-            ? '#ef4444'
+            ? palette.dark.destructive
             : attrs.fixed
-              ? '#f59e0b'
+              ? palette.dark.warning
               : undefined,
         borderSize: attrs.highlighted ? 3 : attrs.pinned || attrs.fixed ? 2 : 0,
+        labelOutlineColor: isDark
+          ? palette.dark.background
+          : palette.light.background,
+        labelOutlineWidth: 2,
       }),
       edgeReducer: (_, attrs) => ({
         ...attrs,
         size: attrs.weight || 1,
+        color: attrs.highlighted
+          ? isDark
+            ? palette.dark.primary
+            : palette.light.primary
+          : isDark
+            ? palette.dark.foreground
+            : palette.light.foreground,
       }),
     });
 
@@ -265,9 +368,9 @@ const IndustriesGraphCore: React.FC<{
   return null;
 };
 
-const IndustriesGraph: React.FC<{ isDark?: boolean }> = ({
-  isDark = false,
-}) => {
+const IndustriesGraph: React.FC = () => {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
   const [isMounted, setIsMounted] = useState(false);
   const [layout, setLayout] = useState('force');
   const [isLayoutRunning, setIsLayoutRunning] = useState(true);
@@ -333,35 +436,14 @@ const IndustriesGraph: React.FC<{ isDark?: boolean }> = ({
   // Don't render anything until mounted on client side
   if (!isMounted) {
     return (
-      <div
-        style={{
-          height: '100%',
-          width: '100%',
-          minHeight: '600px',
-          position: 'relative',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: isDark ? '#1f2937' : '#ffffff',
-        }}
-      >
-        <div style={{ color: isDark ? '#ffffff' : '#000000' }}>
-          Loading industries graph...
-        </div>
+      <div className='h-full w-full min-h-[600px] relative flex items-center justify-center bg-background'>
+        <div className='text-foreground'>Loading industries graph...</div>
       </div>
     );
   }
 
   return (
-    <div
-      style={{
-        height: '100%',
-        width: '100%',
-        minHeight: '600px',
-        position: 'relative',
-        backgroundColor: isDark ? '#1f2937' : '#ffffff',
-      }}
-    >
+    <div className='h-full w-full min-h-[600px] relative bg-background'>
       <SigmaContainer
         style={{ height: '100%', width: '100%' }}
         settings={{ allowInvalidContainer: true }}
@@ -376,7 +458,6 @@ const IndustriesGraph: React.FC<{ isDark?: boolean }> = ({
           forceConfig={forceConfig}
           forceAtlas2Config={forceAtlas2Config}
           noverlapConfig={noverlapConfig}
-          isDark={isDark}
         />
       </SigmaContainer>
       <DragLayoutControls
@@ -404,18 +485,8 @@ const IndustriesGraph: React.FC<{ isDark?: boolean }> = ({
 const DynamicIndustriesGraph = dynamic(() => Promise.resolve(IndustriesGraph), {
   ssr: false,
   loading: () => (
-    <div
-      style={{
-        height: '100%',
-        width: '100%',
-        minHeight: '600px',
-        position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <div>Loading industries graph...</div>
+    <div className='h-full w-full min-h-[600px] relative flex items-center justify-center bg-background'>
+      <div className='text-foreground'>Loading industries graph...</div>
     </div>
   ),
 });

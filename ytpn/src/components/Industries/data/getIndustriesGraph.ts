@@ -5,6 +5,7 @@ import {
   IndustryNode,
   IndustryEdge,
 } from './industries';
+import { palette } from '@/styles/palette';
 
 export interface IndustryGraphConfig {
   width: number;
@@ -33,6 +34,7 @@ export function createIndustryGraph(
       label: node.label,
       size: node.size,
       color: isDark ? node.color.dark : node.color.light,
+      labelColor: { attribute: '#f00' }, // isDark ? palette.dark.foreground : palette.light.foreground,
       x,
       y,
       highlighted: false,

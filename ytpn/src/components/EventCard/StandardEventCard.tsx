@@ -1,6 +1,22 @@
 'use client';
 
 /**
+ * EVENT PROPAGATION HANDLING:
+ * 
+ * This component contains nested interactive elements (buttons, links) within clickable containers.
+ * Proper event propagation handling is critical to prevent unintended navigation when users
+ * interact with nested elements. Key principles:
+ * 
+ * 1. Interactive elements (buttons, links) use e.stopPropagation() to prevent parent click handlers
+ * 2. Modal triggers must prevent card navigation when opened
+ * 3. External links should not trigger parent navigation
+ * 4. Form submissions should not bubble up to parent containers
+ * 
+ * This pattern ensures users can interact with specific elements without accidentally triggering
+ * parent navigation or other unintended behaviors.
+ */
+
+/**
  * FUNCTIONAL REQUIREMENTS:
  * - Standard event card for main content areas and event listings
  * - Comprehensive information display with all available details
@@ -11,18 +27,22 @@
  * - Full theme system integration
  */
 
-import { Calendar, MapPin, Clock, Users, ExternalLink, Tag, Building2 } from 'lucide-react';
+import { Calendar, MapPin, Clock, Users, ExternalLink, Tag, Building2, Award } from 'lucide-react';
 import Link from 'next/link';
+import { useState } from 'react';
 import { EventCardProps, eventTypeConfig } from './index';
 import { formatEventDateTime } from '@/lib/date-utils';
 import { SingleEventICalButton } from '@/components/ICalDownloadButton';
 import { ShareButton } from '@/components/ShareButton';
 import { getEventSlug } from '@/db';
 import { APP_CONSTS } from '@/db/app';
+import Modal from '@/components/ui/Modal';
+import NominationForm from '@/components/forms/NominationForm';
 
 export function StandardEventCard({ event, className = '', onClick }: EventCardProps) {
   const typeConfig = eventTypeConfig[event.eventType];
   const { date, time } = formatEventDateTime(event.date);
+  const [isNominationModalOpen, setIsNominationModalOpen] = useState(false);
   
   // Generate the event URL for sharing
   const eventUrl = event.slug 
@@ -163,6 +183,21 @@ export function StandardEventCard({ event, className = '', onClick }: EventCardP
             eventLocation={event.location}
             size="sm"
           />
+          
+          {/* Nomination Form Button */}
+          {event.showNominationForm && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsNominationModalOpen(true);
+              }}
+              className="inline-flex items-center gap-1 bg-accent text-accent-foreground border border-accent hover:bg-accent/90 text-xs px-3 py-2 rounded transition-colors"
+              title="Nominate a speaker for this event"
+            >
+              <Award className="w-3 h-3" />
+              Nominate
+            </button>
+          )}
         </div>
         
         {/* External Link Button - only show for external links when no slug */}
@@ -183,54 +218,80 @@ export function StandardEventCard({ event, className = '', onClick }: EventCardP
   // If event has a slug, wrap the entire card in a Link
   if (event.slug) {
     return (
-      <Link 
-        href={`/events/${getEventSlug(event)}`} 
-        className="block"
-        onClick={(e) => {
-          // Check if the click originated from an interactive element that should prevent navigation
-          const target = e.target as HTMLElement;
-          const isInteractiveElement = target.closest('[data-prevent-navigation]');
-          if (isInteractiveElement) {
-            e.preventDefault();
-          }
-        }}
-      >
-        <div 
-          className={`
-            bg-card border border-border rounded-lg p-6 shadow-sm hover:shadow-md 
-            transition-all duration-300 cursor-pointer group overflow-hidden
-            max-w-md w-full
-            ${className}
-          `}
-          role="button"
-          tabIndex={0}
+      <>
+        <Link 
+          href={`/events/${getEventSlug(event)}`} 
+          className="block"
+          onClick={(e) => {
+            // Check if the click originated from an interactive element that should prevent navigation
+            const target = e.target as HTMLElement;
+            const isInteractiveElement = target.closest('[data-prevent-navigation]');
+            if (isInteractiveElement) {
+              e.preventDefault();
+            }
+          }}
         >
-          {cardContent}
-        </div>
-      </Link>
+          <div 
+            className={`
+              bg-card border border-border rounded-lg p-6 shadow-sm hover:shadow-md 
+              transition-all duration-300 cursor-pointer group overflow-hidden
+              max-w-md w-full
+              ${className}
+            `}
+            role="button"
+            tabIndex={0}
+          >
+            {cardContent}
+          </div>
+        </Link>
+        
+        {/* Nomination Form Modal */}
+        {event.showNominationForm && (
+          <Modal
+            isOpen={isNominationModalOpen}
+            onClose={() => setIsNominationModalOpen(false)}
+            title="Nominate a Speaker"
+          >
+            <NominationForm />
+          </Modal>
+        )}
+      </>
     );
   }
 
   // Fallback for events without slugs - use onClick handler
   return (
-    <div 
-      className={`
-        bg-card border border-border rounded-lg p-6 shadow-sm hover:shadow-md 
-        transition-all duration-300 cursor-pointer group overflow-hidden
-        max-w-md w-full
-        ${className}
-      `}
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onClick?.();
-        }
-      }}
-    >
-      {cardContent}
-    </div>
+    <>
+      <div 
+        className={`
+          bg-card border border-border rounded-lg p-6 shadow-sm hover:shadow-md 
+          transition-all duration-300 cursor-pointer group overflow-hidden
+          max-w-md w-full
+          ${className}
+        `}
+        onClick={onClick}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onClick?.();
+          }
+        }}
+      >
+        {cardContent}
+      </div>
+      
+      {/* Nomination Form Modal */}
+      {event.showNominationForm && (
+        <Modal
+          isOpen={isNominationModalOpen}
+          onClose={() => setIsNominationModalOpen(false)}
+          title="Nominate a Speaker"
+        >
+          <NominationForm />
+        </Modal>
+      )}
+    </>
   );
 }

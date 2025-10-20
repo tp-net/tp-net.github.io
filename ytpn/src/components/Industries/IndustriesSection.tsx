@@ -1,10 +1,6 @@
 import IndustriesGraph from './IndustriesGraph';
-import { useTheme } from 'next-themes';
 
 export default function IndustriesSection() {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
-
   return (
     <section id='industries' className='py-20 bg-background'>
       <div className='container mx-auto px-6'>
@@ -21,7 +17,7 @@ export default function IndustriesSection() {
           </div>
 
           <div className='relative w-full bg-card rounded-lg border border-border overflow-hidden shadow-lg h-[600px]'>
-            <IndustriesGraph isDark={isDark} />
+            <IndustriesGraph />
           </div>
         </div>
       </div>

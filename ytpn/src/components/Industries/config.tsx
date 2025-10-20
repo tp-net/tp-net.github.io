@@ -1,3 +1,5 @@
+import { useTheme } from '@/components/providers/ThemeProvider';
+
 // Helper component for input fields
 const ConfigInput: React.FC<{
   label: string;
@@ -15,61 +17,76 @@ const ConfigInput: React.FC<{
   max = 1,
   step = 0.001,
   type = 'number',
-}) => (
-  <div style={{ marginBottom: '8px' }}>
-    <label
-      style={{
-        display: 'block',
-        fontSize: '10px',
-        color: '#666',
-        marginBottom: '2px',
-      }}
-    >
-      {label}: {value}
-    </label>
-    <input
-      type={type}
-      value={value}
-      onChange={e => onChange(parseFloat(e.target.value))}
-      min={min}
-      max={max}
-      step={step}
-      style={{
-        width: '100%',
-        padding: '4px',
-        borderRadius: '3px',
-        border: '1px solid #ddd',
-        fontSize: '10px',
-      }}
-    />
-  </div>
-);
+}) => {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
+
+  return (
+    <div style={{ marginBottom: '8px' }}>
+      <label
+        style={{
+          display: 'block',
+          fontSize: '10px',
+          color: isDark ? '#a0a0a0' : '#666',
+          marginBottom: '2px',
+        }}
+      >
+        {label}: {value}
+      </label>
+      <input
+        type={type}
+        value={value}
+        onChange={e => onChange(parseFloat(e.target.value))}
+        min={min}
+        max={max}
+        step={step}
+        style={{
+          width: '100%',
+          padding: '4px',
+          borderRadius: '3px',
+          border: `1px solid ${isDark ? '#404040' : '#ddd'}`,
+          backgroundColor: isDark ? '#1a1a1a' : '#ffffff',
+          color: isDark ? '#e0e0e0' : '#000000',
+          fontSize: '10px',
+        }}
+      />
+    </div>
+  );
+};
 
 // Helper component for checkbox fields
 const ConfigCheckbox: React.FC<{
   label: string;
   checked: boolean;
   onChange: (checked: boolean) => void;
-}> = ({ label, checked, onChange }) => (
-  <div style={{ marginBottom: '8px' }}>
-    <label
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        fontSize: '10px',
-        color: '#666',
-      }}
-    >
-      <input
-        type='checkbox'
-        checked={checked}
-        onChange={e => onChange(e.target.checked)}
-        style={{ marginRight: '6px' }}
-      />
-      {label}
-    </label>
-  </div>
-);
+}> = ({ label, checked, onChange }) => {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
+
+  return (
+    <div style={{ marginBottom: '8px' }}>
+      <label
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          fontSize: '10px',
+          color: isDark ? '#a0a0a0' : '#666',
+        }}
+      >
+        <input
+          type='checkbox'
+          checked={checked}
+          onChange={e => onChange(e.target.checked)}
+          style={{
+            marginRight: '6px',
+            accentColor: isDark ? '#4a7c59' : '#2d5a2d',
+          }}
+        />
+        {label}
+      </label>
+    </div>
+  );
+};
 
 // Force Layout Configuration Panel
 const ForceConfigPanel: React.FC<{
@@ -315,30 +332,55 @@ const DragLayoutControls: React.FC<DragLayoutControlsProps> = ({
   noverlapConfig,
   onNoverlapConfigChange,
 }) => {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
+
   return (
     <div
       style={{
         position: 'absolute',
         top: 10,
         right: 10,
-        background: 'white',
+        background: isDark ? '#1a1a1a' : '#ffffff',
         padding: '20px',
         borderRadius: '8px',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+        boxShadow: isDark
+          ? '0 4px 20px rgba(0,0,0,0.4)'
+          : '0 4px 20px rgba(0,0,0,0.15)',
+        border: `1px solid ${isDark ? '#404040' : '#e0e0e0'}`,
         zIndex: 1000,
         maxWidth: '400px',
         fontFamily: 'system-ui, -apple-system, sans-serif',
       }}
     >
-      <h3 style={{ margin: '0 0 15px 0', color: '#333', fontSize: '18px' }}>
+      <h3
+        style={{
+          margin: '0 0 15px 0',
+          color: isDark ? '#e0e0e0' : '#333',
+          fontSize: '18px',
+        }}
+      >
         Industries Network Explorer
       </h3>
-      <p style={{ margin: '0 0 15px 0', color: '#666', fontSize: '12px' }}>
-        14 industry nodes with weighted connections - Explore industry relationships
+      <p
+        style={{
+          margin: '0 0 15px 0',
+          color: isDark ? '#a0a0a0' : '#666',
+          fontSize: '12px',
+        }}
+      >
+        14 industry nodes with weighted connections - Explore industry
+        relationships
       </p>
 
       <div style={{ marginBottom: '20px' }}>
-        <h4 style={{ margin: '0 0 10px 0', color: '#555', fontSize: '14px' }}>
+        <h4
+          style={{
+            margin: '0 0 10px 0',
+            color: isDark ? '#c0c0c0' : '#555',
+            fontSize: '14px',
+          }}
+        >
           Layout Algorithm
         </h4>
         <select
@@ -348,7 +390,9 @@ const DragLayoutControls: React.FC<DragLayoutControlsProps> = ({
             width: '100%',
             padding: '8px',
             borderRadius: '4px',
-            border: '1px solid #ddd',
+            border: `1px solid ${isDark ? '#404040' : '#ddd'}`,
+            backgroundColor: isDark ? '#1a1a1a' : '#ffffff',
+            color: isDark ? '#e0e0e0' : '#000000',
             fontSize: '14px',
           }}
         >
@@ -367,16 +411,45 @@ const DragLayoutControls: React.FC<DragLayoutControlsProps> = ({
             padding: '10px',
             backgroundColor:
               layout === 'none'
-                ? '#6c757d'
+                ? isDark
+                  ? '#404040'
+                  : '#6c757d'
                 : isLayoutRunning
-                  ? '#dc3545'
-                  : '#28a745',
+                  ? isDark
+                    ? '#8b4513'
+                    : '#dc3545'
+                  : isDark
+                    ? '#4a7c59'
+                    : '#28a745',
             color: 'white',
             border: 'none',
             borderRadius: '4px',
             cursor: layout === 'none' ? 'not-allowed' : 'pointer',
             fontSize: '14px',
             fontWeight: 'bold',
+            transition: 'background-color 0.2s ease',
+          }}
+          onMouseEnter={e => {
+            if (layout !== 'none') {
+              e.currentTarget.style.backgroundColor = isLayoutRunning
+                ? isDark
+                  ? '#a0522d'
+                  : '#c82333'
+                : isDark
+                  ? '#5a8a5a'
+                  : '#218838';
+            }
+          }}
+          onMouseLeave={e => {
+            if (layout !== 'none') {
+              e.currentTarget.style.backgroundColor = isLayoutRunning
+                ? isDark
+                  ? '#8b4513'
+                  : '#dc3545'
+                : isDark
+                  ? '#4a7c59'
+                  : '#28a745';
+            }
           }}
         >
           {isLayoutRunning ? 'Stop Layout' : 'Start Layout'}
@@ -384,19 +457,33 @@ const DragLayoutControls: React.FC<DragLayoutControlsProps> = ({
       </div>
 
       <div style={{ marginBottom: '20px' }}>
-        <h4 style={{ margin: '0 0 10px 0', color: '#555', fontSize: '14px' }}>
+        <h4
+          style={{
+            margin: '0 0 10px 0',
+            color: isDark ? '#c0c0c0' : '#555',
+            fontSize: '14px',
+          }}
+        >
           Drag Mode
         </h4>
 
         <div style={{ marginBottom: '10px' }}>
           <label
-            style={{ display: 'flex', alignItems: 'center', fontSize: '14px' }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              fontSize: '14px',
+              color: isDark ? '#e0e0e0' : '#000000',
+            }}
           >
             <input
               type='checkbox'
               checked={dragMode}
               onChange={onToggleDragMode}
-              style={{ marginRight: '8px' }}
+              style={{
+                marginRight: '8px',
+                accentColor: isDark ? '#4a7c59' : '#2d5a2d',
+              }}
             />
             Enable Dragging
           </label>
@@ -409,7 +496,7 @@ const DragLayoutControls: React.FC<DragLayoutControlsProps> = ({
                 display: 'block',
                 marginBottom: '5px',
                 fontSize: '12px',
-                color: '#666',
+                color: isDark ? '#a0a0a0' : '#666',
               }}
             >
               Drag Lock Mode:
@@ -425,7 +512,9 @@ const DragLayoutControls: React.FC<DragLayoutControlsProps> = ({
                 width: '100%',
                 padding: '6px',
                 borderRadius: '4px',
-                border: '1px solid #ddd',
+                border: `1px solid ${isDark ? '#404040' : '#ddd'}`,
+                backgroundColor: isDark ? '#1a1a1a' : '#ffffff',
+                color: isDark ? '#e0e0e0' : '#000000',
                 fontSize: '12px',
               }}
             >
@@ -441,17 +530,28 @@ const DragLayoutControls: React.FC<DragLayoutControlsProps> = ({
         <div
           style={{
             padding: '12px',
-            backgroundColor: '#e3f2fd',
+            backgroundColor: isDark ? '#1a2e1a' : '#e3f2fd',
             borderRadius: '6px',
             fontSize: '12px',
             lineHeight: '1.4',
             marginBottom: '15px',
+            border: `1px solid ${isDark ? '#4a7c59' : '#1976d2'}`,
           }}
         >
-          <div style={{ color: '#1976d2', fontWeight: 'bold' }}>
+          <div
+            style={{
+              color: isDark ? '#4a7c59' : '#1976d2',
+              fontWeight: 'bold',
+            }}
+          >
             Dragging: {draggedNode}
           </div>
-          <div style={{ color: '#666', marginTop: '4px' }}>
+          <div
+            style={{
+              color: isDark ? '#a0a0a0' : '#666',
+              marginTop: '4px',
+            }}
+          >
             Mode: {dragLockMode}
           </div>
         </div>
@@ -463,12 +563,18 @@ const DragLayoutControls: React.FC<DragLayoutControlsProps> = ({
           style={{
             marginBottom: '15px',
             padding: '12px',
-            backgroundColor: '#fff3cd',
+            backgroundColor: isDark ? '#2d1a0d' : '#fff3cd',
             borderRadius: '6px',
-            border: '1px solid #ffeaa7',
+            border: `1px solid ${isDark ? '#8b4513' : '#ffeaa7'}`,
           }}
         >
-          <h4 style={{ margin: '0 0 12px 0', color: '#555', fontSize: '12px' }}>
+          <h4
+            style={{
+              margin: '0 0 12px 0',
+              color: isDark ? '#c0c0c0' : '#555',
+              fontSize: '12px',
+            }}
+          >
             {layout.charAt(0).toUpperCase() + layout.slice(1)} Configuration
           </h4>
 
