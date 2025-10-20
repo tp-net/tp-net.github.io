@@ -1,3 +1,12 @@
+export interface IndustryEdge {
+  source: string;
+  target: string;
+  color?: {
+    light: string;
+    dark: string;
+  };
+}
+
 export interface IndustryNode {
   id: string;
   label: string;
@@ -6,201 +15,180 @@ export interface IndustryNode {
     light: string;
     dark: string;
   };
-  category: 'traditional' | 'tech' | 'emerging' | 'infrastructure';
+  category: string; // Keep category as a string identifier for grouping
 }
 
-export interface IndustryEdge {
-  source: string;
-  target: string;
-  weight: number;
-  color: {
-    light: string;
-    dark: string;
-  };
-}
-
-// Theme-aware color palette - flipped structure: industry.level.mode
-export const industryColors = {
-  traditional: {
-    primary: {
-      light: '#059669', // emerald-600
-      dark: '#10b981', // emerald-500
-    },
-    secondary: {
-      light: '#10b981', // emerald-500
-      dark: '#34d399', // emerald-400
-    },
-    tertiary: {
-      light: '#34d399', // emerald-400
-      dark: '#6ee7b7', // emerald-300
-    },
-  },
-  tech: {
-    primary: {
-      light: '#2563eb', // blue-600
-      dark: '#3b82f6', // blue-500
-    },
-    secondary: {
-      light: '#3b82f6', // blue-500
-      dark: '#60a5fa', // blue-400
-    },
-    tertiary: {
-      light: '#60a5fa', // blue-400
-      dark: '#93c5fd', // blue-300
-    },
-  },
-  emerging: {
-    primary: {
-      light: '#7c3aed', // violet-600
-      dark: '#8b5cf6', // violet-500
-    },
-    secondary: {
-      light: '#8b5cf6', // violet-500
-      dark: '#a78bfa', // violet-400
-    },
-    tertiary: {
-      light: '#a78bfa', // violet-400
-      dark: '#c4b5fd', // violet-300
-    },
-  },
+// Category definitions for reference (no longer used for styling)
+export const categoryInfo = {
+  industry: { name: 'Industry', description: 'Traditional industrial sectors' },
   infrastructure: {
-    primary: {
-      light: '#dc2626', // red-600
-      dark: '#ef4444', // red-500
-    },
-    secondary: {
-      light: '#ef4444', // red-500
-      dark: '#f87171', // red-400
-    },
-    tertiary: {
-      light: '#f87171', // red-400
-      dark: '#fca5a5', // red-300
-    },
+    name: 'Infrastructure',
+    description: 'Critical infrastructure sectors',
+  },
+  tech: { name: 'Technology', description: 'Technology and software sectors' },
+  emerging: {
+    name: 'Emerging',
+    description: 'Emerging and innovative sectors',
   },
 } as const;
 
-// Helper function to get theme-appropriate color using category lookup
-export const getThemeColor = (
-  category: keyof typeof industryColors,
-  variant: 'primary' | 'secondary' | 'tertiary',
-  isDark: boolean
-): string => {
-  return industryColors[category][variant][isDark ? 'dark' : 'light'];
-};
-
-// Helper function to get color object for a category and variant
-export const getCategoryColor = (
-  category: keyof typeof industryColors,
-  variant: 'primary' | 'secondary' | 'tertiary'
-): { light: string; dark: string } => {
-  return industryColors[category][variant];
+// Helper function to get category information
+export const getCategoryInfo = (category: string) => {
+  return (
+    categoryInfo[category as keyof typeof categoryInfo] || categoryInfo.industry
+  );
 };
 
 export const nodes: IndustryNode[] = [
   {
     id: 'energy',
     label: 'Energy',
-    size: 20,
-    color: getCategoryColor('traditional', 'primary'),
-    category: 'traditional',
+    size: 12,
+    color: {
+      light: '#059669', // emerald-600
+      dark: '#10b981', // emerald-500
+    },
+    category: 'industry',
   },
   {
     id: 'mining',
     label: 'Mining',
-    size: 18,
-    color: getCategoryColor('traditional', 'secondary'),
-    category: 'traditional',
+    size: 12,
+    color: {
+      light: '#059669', // emerald-600
+      dark: '#10b981', // emerald-500
+    },
+    category: 'industry',
   },
   {
     id: 'manufacturing',
     label: 'Manufacturing',
-    size: 22,
-    color: getCategoryColor('traditional', 'tertiary'),
-    category: 'traditional',
+    size: 12,
+    color: {
+      light: '#059669', // emerald-600
+      dark: '#10b981', // emerald-500
+    },
+    category: 'industry',
   },
   {
     id: 'construction',
     label: 'Construction',
-    size: 16,
-    color: getCategoryColor('infrastructure', 'primary'),
+    size: 10,
+    color: {
+      light: '#2563eb', // blue-600
+      dark: '#3b82f6', // blue-500
+    },
     category: 'infrastructure',
   },
   {
     id: 'transportation',
     label: 'Transportation',
-    size: 19,
-    color: getCategoryColor('infrastructure', 'secondary'),
+    size: 10,
+    color: {
+      light: '#2563eb', // blue-600
+      dark: '#3b82f6', // blue-500
+    },
     category: 'infrastructure',
   },
   {
     id: 'healthcare',
     label: 'Healthcare',
-    size: 21,
-    color: getCategoryColor('emerging', 'primary'),
+    size: 6,
+    color: {
+      light: '#7c3aed', // violet-600
+      dark: '#8b5cf6', // violet-500
+    },
     category: 'emerging',
   },
   {
     id: 'water',
     label: 'Water',
-    size: 15,
-    color: getCategoryColor('infrastructure', 'tertiary'),
+    size: 10,
+    color: {
+      light: '#2563eb', // blue-600
+      dark: '#3b82f6', // blue-500
+    },
     category: 'infrastructure',
   },
   {
     id: 'defence',
     label: 'Defence',
-    size: 17,
-    color: getCategoryColor('traditional', 'secondary'),
-    category: 'traditional',
+    size: 12,
+    color: {
+      light: '#059669', // emerald-600
+      dark: '#10b981', // emerald-500
+    },
+    category: 'industry',
   },
   {
     id: 'agriculture',
     label: 'Agriculture',
-    size: 18,
-    color: getCategoryColor('traditional', 'tertiary'),
-    category: 'traditional',
+    size: 12,
+    color: {
+      light: '#059669', // emerald-600
+      dark: '#10b981', // emerald-500
+    },
+    category: 'industry',
   },
   {
     id: 'software',
     label: 'Software',
-    size: 24,
-    color: getCategoryColor('tech', 'primary'),
+    size: 8,
+    color: {
+      light: '#dc2626', // red-600
+      dark: '#ef4444', // red-500
+    },
     category: 'tech',
   },
   {
     id: 'web-development',
     label: 'Web Development',
-    size: 20,
-    color: getCategoryColor('tech', 'secondary'),
+    size: 8,
+    color: {
+      light: '#dc2626', // red-600
+      dark: '#ef4444', // red-500
+    },
     category: 'tech',
   },
   {
     id: 'cloud',
     label: 'Cloud',
-    size: 23,
-    color: getCategoryColor('tech', 'tertiary'),
+    size: 8,
+    color: {
+      light: '#dc2626', // red-600
+      dark: '#ef4444', // red-500
+    },
     category: 'tech',
   },
   {
     id: 'data-science',
     label: 'Data Science',
-    size: 21,
-    color: getCategoryColor('tech', 'primary'),
+    size: 8,
+    color: {
+      light: '#dc2626', // red-600
+      dark: '#ef4444', // red-500
+    },
     category: 'tech',
   },
   {
     id: 'carbon-capture',
     label: 'Carbon Capture',
-    size: 19,
-    color: getCategoryColor('emerging', 'secondary'),
+    size: 6,
+    color: {
+      light: '#7c3aed', // violet-600
+      dark: '#8b5cf6', // violet-500
+    },
     category: 'emerging',
   },
   {
     id: 'oil-gas',
     label: 'Oil and Gas',
-    size: 20,
-    color: getCategoryColor('traditional', 'primary'),
-    category: 'traditional',
+    size: 12,
+    color: {
+      light: '#059669', // emerald-600
+      dark: '#10b981', // emerald-500
+    },
+    category: 'industry',
   },
 ];
 
@@ -208,121 +196,161 @@ export const edges: IndustryEdge[] = [
   {
     source: 'energy',
     target: 'mining',
-    weight: 3,
-    color: getCategoryColor('traditional', 'primary'),
+    color: {
+      light: '#6b7280', // gray-500
+      dark: '#9ca3af', // gray-400
+    },
   },
   {
     source: 'energy',
     target: 'oil-gas',
-    weight: 4,
-    color: getCategoryColor('traditional', 'primary'),
+    color: {
+      light: '#6b7280', // gray-500
+      dark: '#9ca3af', // gray-400
+    },
   },
   {
     source: 'energy',
     target: 'manufacturing',
-    weight: 3,
-    color: getCategoryColor('traditional', 'primary'),
+    color: {
+      light: '#6b7280', // gray-500
+      dark: '#9ca3af', // gray-400
+    },
   },
   {
     source: 'mining',
     target: 'manufacturing',
-    weight: 2,
-    color: getCategoryColor('traditional', 'secondary'),
+    color: {
+      light: '#6b7280', // gray-500
+      dark: '#9ca3af', // gray-400
+    },
   },
   {
     source: 'manufacturing',
     target: 'construction',
-    weight: 2,
-    color: getCategoryColor('traditional', 'tertiary'),
+    color: {
+      light: '#6b7280', // gray-500
+      dark: '#9ca3af', // gray-400
+    },
   },
   {
     source: 'construction',
     target: 'transportation',
-    weight: 2,
-    color: getCategoryColor('infrastructure', 'primary'),
+    color: {
+      light: '#6b7280', // gray-500
+      dark: '#9ca3af', // gray-400
+    },
   },
   {
     source: 'transportation',
     target: 'energy',
-    weight: 2,
-    color: getCategoryColor('infrastructure', 'secondary'),
+    color: {
+      light: '#6b7280', // gray-500
+      dark: '#9ca3af', // gray-400
+    },
   },
   {
     source: 'software',
     target: 'web-development',
-    weight: 4,
-    color: getCategoryColor('tech', 'primary'),
+    color: {
+      light: '#6b7280', // gray-500
+      dark: '#9ca3af', // gray-400
+    },
   },
   {
     source: 'software',
     target: 'cloud',
-    weight: 4,
-    color: getCategoryColor('tech', 'primary'),
+    color: {
+      light: '#6b7280', // gray-500
+      dark: '#9ca3af', // gray-400
+    },
   },
   {
     source: 'software',
     target: 'data-science',
-    weight: 3,
-    color: getCategoryColor('tech', 'primary'),
+    color: {
+      light: '#6b7280', // gray-500
+      dark: '#9ca3af', // gray-400
+    },
   },
   {
     source: 'cloud',
     target: 'data-science',
-    weight: 3,
-    color: getCategoryColor('tech', 'tertiary'),
+    color: {
+      light: '#6b7280', // gray-500
+      dark: '#9ca3af', // gray-400
+    },
   },
   {
     source: 'web-development',
     target: 'cloud',
-    weight: 3,
-    color: getCategoryColor('tech', 'secondary'),
+    color: {
+      light: '#6b7280', // gray-500
+      dark: '#9ca3af', // gray-400
+    },
   },
   {
     source: 'data-science',
     target: 'healthcare',
-    weight: 2,
-    color: getCategoryColor('tech', 'primary'),
+    color: {
+      light: '#6b7280', // gray-500
+      dark: '#9ca3af', // gray-400
+    },
   },
   {
     source: 'carbon-capture',
     target: 'energy',
-    weight: 3,
-    color: getCategoryColor('emerging', 'secondary'),
+    color: {
+      light: '#6b7280', // gray-500
+      dark: '#9ca3af', // gray-400
+    },
   },
   {
     source: 'carbon-capture',
     target: 'oil-gas',
-    weight: 2,
-    color: getCategoryColor('emerging', 'secondary'),
+    color: {
+      light: '#6b7280', // gray-500
+      dark: '#9ca3af', // gray-400
+    },
   },
   {
     source: 'water',
     target: 'agriculture',
-    weight: 2,
-    color: getCategoryColor('infrastructure', 'tertiary'),
+    color: {
+      light: '#6b7280', // gray-500
+      dark: '#9ca3af', // gray-400
+    },
   },
   {
     source: 'water',
     target: 'healthcare',
-    weight: 2,
-    color: getCategoryColor('infrastructure', 'tertiary'),
+    color: {
+      light: '#6b7280', // gray-500
+      dark: '#9ca3af', // gray-400
+    },
   },
   {
     source: 'defence',
     target: 'manufacturing',
-    weight: 2,
-    color: getCategoryColor('traditional', 'secondary'),
+    color: {
+      light: '#6b7280', // gray-500
+      dark: '#9ca3af', // gray-400
+    },
   },
   {
     source: 'defence',
     target: 'software',
-    weight: 2,
-    color: getCategoryColor('traditional', 'secondary'),
+    color: {
+      light: '#6b7280', // gray-500
+      dark: '#9ca3af', // gray-400
+    },
   },
   {
     source: 'agriculture',
     target: 'manufacturing',
-    weight: 2,
-    color: getCategoryColor('traditional', 'tertiary'),
+    color: {
+      light: '#6b7280', // gray-500
+      dark: '#9ca3af', // gray-400
+    },
   },
 ];

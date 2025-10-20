@@ -34,7 +34,7 @@ export function createIndustryGraph(
       label: node.label,
       size: node.size,
       color: isDark ? node.color.dark : node.color.light,
-      labelColor: { attribute: '#f00' }, // isDark ? palette.dark.foreground : palette.light.foreground,
+      labelColor: { attribute: isDark ? palette.dark.foreground : palette.light.foreground },
       x,
       y,
       highlighted: false,
@@ -52,9 +52,9 @@ export function createIndustryGraph(
     // Only add edge if both source and target nodes exist
     if (graph.hasNode(edge.source) && graph.hasNode(edge.target)) {
       graph.addEdge(edge.source, edge.target, {
-        color: isDark ? edge.color.dark : edge.color.light,
-        size: edge.weight,
-        weight: edge.weight,
+        color: edge.color ? (isDark ? edge.color.dark : edge.color.light) : (isDark ? palette.dark.foreground : palette.light.foreground),
+        size: 2, // Default edge size
+        weight: 1, // Default edge weight
       });
     }
   });
