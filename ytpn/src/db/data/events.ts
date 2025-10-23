@@ -10,7 +10,7 @@ export const events: Event[] = [
     description:
       "A networking evening where we showcase a young technical professional's project, research, stack or tool.",
     details:
-      'Join us at a local pub for an informal networking event and presentation. With friends and colleagues. By and intended for early career professionals, but all are welcome.',
+      'Join us at the Brisbane City Library for a few presentation on technical work, followed by a trip to the pub for some informal networking. With friends and colleagues. By and intended for early career professionals, but all are welcome.',
     eventType: EVENT_TYPES.NETWORKING,
     date: new Date('2025-11-20T17:15:00+10:00'),
     location: 'tbc',
