@@ -13,7 +13,7 @@ export const events: Event[] = [
       'Join us at the Brisbane City Library for a few presentations on some technical work, followed by a trip to the pub for some informal networking. With friends and colleagues. By and intended for early career professionals, but all are welcome.',
     eventType: EVENT_TYPES.NETWORKING,
     date: new Date('2025-11-20T17:15:00+10:00'),
-    location: 'tbc',
+    location: 'Brisbane City Library community meeting room',
     image: '/assets/images/networking1.webp',
     sponsors: [],
     hiEventsId: '1',
